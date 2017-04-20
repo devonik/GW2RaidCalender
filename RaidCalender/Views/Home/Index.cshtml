@@ -60,22 +60,25 @@
             //Create new
 			select: function (start, end) {
 			    $("#createEvent").css("display", "block");
-			    var eventData;
-			    //if (title) {
-			        eventData = {
-			            title: $("#cname").val(),
-			            start: start,
-			            end: end,
-			            von: $("#cvon").val(),
-			            bis: $("#cbis").val()
+			    //$("#send").click(function () {
+			    //    eventData = {
+			    //        title: $("#cname").val(),
+			    //        start: start,
+			    //        end: end,
+			    //        von: $("#cvon").val(),
+			    //        bis: $("#cbis").val()
+			    //    };
+			    //    $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 
-			        };
-			        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-			    //}
-			    $('#calendar').fullCalendar('unselect');
+			    //    $('#calendar').fullCalendar('unselect');
+                //    //Close the Window and reset the create form
+			    //    $("#createEvent").css("display", "none");
+			    //    $('#eventForm')[0].reset;
+			    //});
 			},
             //Detail View
 			eventClick: function (calEvent, jsEvent, view) {
+			    $("#typ").text(calEvent.typ);
 			    $("#name").text(calEvent.title);
 			    $("#von").text(calEvent.von);
 			    $("#bis").text(calEvent.bis);
@@ -94,10 +97,17 @@
 
 
 			},
+			eventRender: function (event, element) {
+			    console.log("eventReder");
+			    //element.qtip({
+			    //    content: event.description
+			    //});
+			},
 			editable: true,
 			eventLimit: true, // allow "more" link when too many events
 			events: [
 				{
+                    typ: 'Raid',
 					title: 'Geistertal',
 					start: '2017-04-01',
 				    von:'19:00',
