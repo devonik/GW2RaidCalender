@@ -6,13 +6,12 @@ using System.Web.Mvc;
 
 namespace RaidCalenderWithIdentity.Controllers
 {
-    public class HomeController : Controller
+    public class EventTimerController : Controller
     {
+        // GET: EventTimer
         public ActionResult Index()
         {
-            ViewBag.Username = User.Identity.Name;
-            return View(ViewBag);
+            return View();
         }
-        
     }
 }

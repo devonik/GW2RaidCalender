@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EventTimerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -249,10 +250,14 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\eventtimer\moment.min.js" />
+    <Content Include="Scripts\eventtimer\script.js" />
+    <Content Include="Scripts\eventtimer\style.css" />
     <Content Include="Scripts\fullcalender-3.3.1\demos\json\events.json" />
     <Content Include="Scripts\fullcalender-3.3.1\demos\php\get-events.php" />
     <Content Include="Scripts\fullcalender-3.3.1\demos\php\get-timezones.php" />
     <Content Include="Scripts\fullcalender-3.3.1\demos\php\utils.php" />
+    <None Include="Properties\PublishProfiles\GW2Apps.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom\calender.js" />
     <Content Include="Scripts\fullcalender-3.3.1\CHANGELOG.txt" />
@@ -386,8 +391,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -411,6 +414,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\_createEvent.cshtml" />
     <Content Include="Views\Home\_detailEvent.cshtml" />
+    <Content Include="Views\EventTimer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
