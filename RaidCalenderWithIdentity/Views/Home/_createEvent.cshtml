@@ -1,19 +1,10 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "_createEvent";
 }
-<style>
-    .ng-invalid{
-    border-color:#a94442;
-    box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
-    }
-    .ng-valid{
-        border-color: green;
-        box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
-    }
-</style>
+<link href="~/Scripts/custom/createWindow.css" rel="stylesheet" />
+ @*<span class="fielderror"><i class="fa_icon icon-minus-sign"></i>numeric input required</span><span class="datatype"><i class="fa_icon icon-info-sign"></i>numeric (number of seconds)</span> <span class="charcount"><i class="fa_icon icon-info-sign"></i>min. 0 - max. 180</span>*@
 <div id="createEvent" class="modal" ng-controller="AddEventController as eventCtrl">
-<!-- Modal content -->
+    <!-- Modal content -->
     <div class="modal-content">
 
         <div class="modal-header">
@@ -42,88 +33,175 @@
                     </div>
                     <div class="col-md-2" ng-show="event.typ=='frac'">
                         <label>Bezeichnung:</label>
-                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required/>
+                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
                         @*<p ng-show="event.title.$invalid" class="help-block">Bezeichung ist ein Pflichfeld</p>*@
                     </div>
                     <div class="col-md-2" ng-show="event.typ=='sonst'">
                         <label>Bezeichnung:</label>
-                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required/>
+                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
                     </div>
-                </fieldset>
-                <fieldset class="form-group">
-                    <div class="col-md-2">
+                    <div class="col-md-2" style="width:10%">
                         <label>Von:</label>
-                        <input type="text" ng-model="event.von" id="cvon" class="timepicker" required/>
+                        <input type="text" ng-model="event.von" id="cvon" class="timepicker form-control" style="width:6.5em" required />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" style="width:10%">
                         <label>Bis:</label>
-                        <input type="text" ng-model="event.bis" id="cbis" class="timepicker" required/>
+                        <input type="text" ng-model="event.bis" id="cbis" class="timepicker form-control" style="width:6.5em" required />
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
-                    <label>character</label>
-                    <ul>
-                        <li>
-                            <label style="width:80px;">Chrono</label>
-                            <input type="number" ng-model="event.character.chrono.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Druid</label>
-                            <input type="number" ng-model="event.character.druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">C-Druid</label>
-                            <input type="number" ng-model="event.character.condi_druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">PS</label>
-                            <input type="number" ng-model="event.character.warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Rev</label>
-                            <input type="number" ng-model="event.character.revenant.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Tempest</label>
-                            <input type="number" ng-model="event.character.tempest.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Dieb</label>
-                            <input type="number" ng-model="event.character.thief.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Guard</label>
-                            <input type="number" ng-model="event.character.guard.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Ingi</label>
-                            <input type="number" ng-model="event.character.ingeneur.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">Necro</label>
-                            <input type="number" ng-model="event.character.necro.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">C-PS</label>
-                            <input type="number" ng-model="event.character.condi_warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                        <li>
-                            <label style="width:80px;">C-Ranger</label>
-                            <input type="number" ng-model="event.character.condi_ranger.count" style="width:auto;display:inline;"  class="form-control bfh-number" min="0" max="10" value="0" />
-                        </li>
-                    </ul>
-                    @* Geht nicht *@
-                    <p ng-show="{{sum(event.character.condi_ranger.count+event.character.druid.count+event.character.condi_druid.count
+                    <label>Character</label>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Basic</th>
+                                    <th>Bersi DPS</th>
+                                    <th>Condi DPS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @* Basic *@
+                                    <td>
+                                        <label>Chrono</label>
+                                        <input type="number" ng-model="event.character.chrono.count"  class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Bersi DPS *@
+                                    <td>
+                                        <label>Rev</label>
+                                        <input type="number" ng-model="event.character.revenant.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Condi DPS *@
+                                    <td>
+                                        <label>Ingi</label>
+                                        <input type="number" ng-model="event.character.ingeneur.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    @* Basic *@
+                                    <td>
+                                        <label>Druid</label>
+                                        <input type="number" ng-model="event.character.druid.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Bersi DPS *@
+                                    <td>
+                                        <label>Tempest</label>
+                                        <input type="number" ng-model="event.character.tempest.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Condi DPS *@
+                                    <td>
+                                        <label>Necro</label>
+                                        <input type="number" ng-model="event.character.necro.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    @* Basic *@
+                                    <td>
+                                        <label>C-Druid</label>
+                                        <input type="number" ng-model="event.character.condi_druid.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Bersi DPS *@
+                                    <td>
+                                        <label>Dieb</label>
+                                        <input type="number" ng-model="event.character.thief.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Condi DPS *@
+                                    <td>
+                                        <label>C-Ranger</label>
+                                        <input type="number" ng-model="event.character.condi_ranger.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    @* Basic *@
+                                    <td>
+                                        <label>PS</label>
+                                        <input type="number" ng-model="event.character.warrior.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Bersi DPS *@
+                                    <td>
+                                        <label>Guard</label>
+                                        <input type="number" ng-model="event.character.guard.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Platzhalter *@
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    @* Basic *@
+                                    <td>
+                                        <label>C-PS</label>
+                                        <input type="number" ng-model="event.character.condi_warrior.count" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                    @* Platzhalter *@
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                        @*<label>character</label>
+            <ul>
+                <li>
+                    <label style="width:80px;">Chrono</label>
+                    <input type="number" ng-model="event.character.chrono.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Druid</label>
+                    <input type="number" ng-model="event.character.druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">C-Druid</label>
+                    <input type="number" ng-model="event.character.condi_druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">PS</label>
+                    <input type="number" ng-model="event.character.warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Rev</label>
+                    <input type="number" ng-model="event.character.revenant.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Tempest</label>
+                    <input type="number" ng-model="event.character.tempest.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Dieb</label>
+                    <input type="number" ng-model="event.character.thief.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Guard</label>
+                    <input type="number" ng-model="event.character.guard.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Ingi</label>
+                    <input type="number" ng-model="event.character.ingeneur.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">Necro</label>
+                    <input type="number" ng-model="event.character.necro.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">C-PS</label>
+                    <input type="number" ng-model="event.character.condi_warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+                <li>
+                    <label style="width:80px;">C-Ranger</label>
+                    <input type="number" ng-model="event.character.condi_ranger.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
+                </li>
+            </ul>*@
+                        @* Geht nicht *@
+                        <p ng-show="{{sum(event.character.condi_ranger.count+event.character.druid.count+event.character.condi_druid.count
                                 +event.character.warrior.count+event.character.revenant.count+event.character.tempest.count
                                 +event.character.thief.count+event.character.guard.count+event.character.ingeneur.count
                                 +event.character.necro.count+event.character.condi_warrior.count+event.character.condi_ranger.count)>10}}">Es können nur 10 Leute in den Raid</p>
-                </fieldset>
+</fieldset>
                 <fieldset class="form-group">
-                    <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset"/>
+                    <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
                     <input ng-click="update(event)" class="btn btn-primary pull-right" ng-disabled="eventForm.$invalid" value="Speichern" />
                 </fieldset>
             </form>
-    </div>
+        </div>
         <div class="modal-footer">
             <p>form = {{event}}</p>
             <p>master = {{master}}</p>
@@ -133,6 +211,40 @@
 
 </div>
 <script>
+    //(function ($) {
+    //    $.fn.spinner = function () {
+    //        this.each(function () {
+    //            var el = $(this);
+
+    //            // add elements
+    //            el.wrap('<span class="spinner"></span>');
+    //            el.before('<span class="sub">-</span>');
+    //            el.after('<span class="add">+</span>');
+
+    //            // substract
+    //            el.parent().on('click', '.sub', function () {
+    //                if (el.val() > parseInt(el.attr('min')))
+    //                    el.val(function (i, oldval) {
+    //                        console.log(oldval);
+    //                            return --oldval;
+    //                    });
+    //            });
+
+    //            // increment
+    //            el.parent().on('click', '.add', function () {
+    //                if (el.val() < parseInt(el.attr('max')))
+                        
+    //                    el.val(function (i, oldval) {
+    //                        console.log(oldval);
+    //                        return ++oldval;
+    //                    });
+    //            });
+    //        });
+    //    };
+    //})(jQuery);
+
+    //$('input[type=number]').spinner();
+
     var eventApp = angular.module('event', []);
     eventApp.controller('AddEventController', ['$scope', function ($scope) {
         console.log("im AddEventController controller");
@@ -150,15 +262,15 @@
                         eventNew.character[charItem].people_in = 0;
                         eventNew.character[charItem].teilnehmer = "";
                     });
-                    
-                
+
+
                     console.log(eventNew);
                     $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
 
                     $('#calendar').fullCalendar('unselect');
                     ////Close the Window and reset the create form
                     $("#createEvent").css("display", "none");
-                
+
             });
                 $scope.event = {};
             }
@@ -172,5 +284,4 @@
         $scope.reset();
     }]);
 </script>
-
 
