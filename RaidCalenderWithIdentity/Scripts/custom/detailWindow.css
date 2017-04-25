@@ -1,4 +1,12 @@
-﻿/* Dropdown Button */
+﻿#detail_raidImg{
+    position:absolute;
+    margin-left:50%;
+}
+.modal-body{
+    display: flex;
+    flex-direction:column;
+}
+/* Dropdown Button */
 .dropbtn {
     background-color: #4CAF50;
     color: white;
