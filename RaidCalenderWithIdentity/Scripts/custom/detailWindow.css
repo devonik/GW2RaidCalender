@@ -8,15 +8,15 @@
 }
 /* Dropdown Button */
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: steelblue;
     color: white;
     /*padding: 16px;*/
     font-size: 16px;
     border: none;
     cursor: pointer;
 }
-#btn_anmelden{
-    background-color: #4CAF50;
+.btn_anmelden{
+    background-color: steelblue;
     color: white;
     /*padding: 16px;*/
     font-size: 16px;
@@ -27,6 +27,7 @@
 .teilnehmer-dropdown {
     position: relative;
     display: inline-block;
+    padding-left:10px;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -57,5 +58,5 @@
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .teilnehmer-dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+    background-color: lightsteelblue;
 }
