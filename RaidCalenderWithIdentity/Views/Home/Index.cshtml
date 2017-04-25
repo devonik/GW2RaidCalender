@@ -1,29 +1,28 @@
 ﻿@using Microsoft.AspNet.Identity
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-            font-size: 14px;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+        font-size: 14px;
+    }
 
-        #top {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            padding: 0 10px;
-            line-height: 40px;
-            font-size: 12px;
-        }
+    #top {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        padding: 0 10px;
+        line-height: 40px;
+        font-size: 12px;
+    }
 
-        #calendar {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 50px 10px 0 0;
-        }
-        
-    </style>
+    #calendar {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 50px 10px 0 0;
+    }
+</style>
 
-    <div id='calendar'></div>
+<div id='calendar'></div>
 @Html.Partial("_detailEvent")
 @Html.Partial("_createEvent")
 <script>
@@ -71,33 +70,38 @@
 			},
             //Detail View
 			eventClick: function (calEvent, jsEvent, view) {
-			    //Setzt das click event zurück, prevented den fall, dass das click event öfter initialisiert wird
+                //Setzt das click event zurück, prevented den fall, dass das click event öfter initialisiert wird
 			    $("#btn_anmelden").unbind("click");
 			    $("#typ").text(calEvent.typ);
 			    $("#name").text(calEvent.title);
 			    $("#von").text(calEvent.von);
 			    $("#bis").text(calEvent.bis);
 			    if (!(typeof calEvent.title === "undefined")) {
-			        $("#detail_raidImg").html("<img src='img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
+			        $("#detail_raidImg").html("<img src='/img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
 			    }
 			    $("#character").html("");
 			    if (!(typeof calEvent.character === "undefined")) {
 			        $.each(calEvent.character, function (char, value) {
-                        //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
 			            //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
-			            $("#character").append("<li>"+
-                                                    "<img src='img/klassen/" + char + ".png'/>"
-                                                    + char + " : <span title='Maximal'>" + value.count + "</span>" +
-                                                    "<span id='" + char + "Count' title='[n] von maximal [n] plätzen belegt'>(" + value.people_in + "/" + value.count + ")</span>"+
-                                                    "<div class='teilnehmer-dropdown'>" +
-                                                        "<button class='dropbtn'>Teilnehmer</button>" +
-                                                        "<div id='" + char + "Dropdown' class='teilnehmer-dropdown-content'>" +
-                                                            "<p>" + value.teilnehmer + "</p>" +
-                                                        "</div>"+
-                                                    "</div>" +
-                                                    "<input type='radio' name='anmelden' value='" + char + "'/>" +
-                                                    //"<button id='btn_anmelden' title='Anmelden' style='display:none;'>Anmelden</button>"+
-                                               "</li>");
+			            $("#detail_table_body").append("<tr>" +
+                                                            "<td>"+
+                                                                "<img src='/img/klassen/" + char + ".png'/>"+
+                                                                char + " : <span title='Maximal'>" + value.count + "</span>" +
+                                                            "</td>" +
+                                                            "<td>" +
+                                                                "<span id='" + char + "Count' title='[n] von maximal [n] plätzen belegt'>(" + value.people_in + "/" + value.count + ")</span>" +
+                                                                "<div class='teilnehmer-dropdown'>" +
+                                                                    "<button class='dropbtn'>Teilnehmer</button>" +
+                                                                    "<div id='" + char + "Dropdown' class='teilnehmer-dropdown-content'>" +
+                                                                        "<p>" + value.teilnehmer + "</p>" +
+                                                                    "</div>" +
+                                                                "</div>" +
+                                                            "<td>" +
+                                                                "<input type='radio' name='anmelden' value='" + char + "'/>" +
+                                                                "<button id='btn_anmelden' title='Anmelden'>Anmelden</button>"+
+                                                            "</td>"+
+                                                       "</tr>");
+
 			        });
 			        $("#btn_anmelden").css("display", "");
 			        $("#btn_anmelden").click(function () {
@@ -107,12 +111,12 @@
 			            if ((calEvent.character[radioValue].people_in + 1) <= (calEvent.character[radioValue].count)) {
 			                //Added die Einladung zu dem Objekt
 			                calEvent.character[radioValue].people_in = calEvent.character[radioValue].people_in + 1;
-			                //Später der currentUser
+                            //Später der currentUser
 			                calEvent.character[radioValue].teilnehmer = "Killingspree.1370";
 			                //Updatet die Zahl auf der Oberfläche //// vllt kann man hier angular verwenden ????
 			                $("#" + radioValue + "Count").text("(" + calEvent.character[radioValue].people_in + "/" + calEvent.character[radioValue].count + ")");
                             //Fügt den Username des aktuellen Users der GUI hinzu
-			                $("#" + radioValue +"Dropdown").append("<p>"+"Killingspree.1370"+"</p>");
+			                $("#" + radioValue+"Dropdown").append("<p>"+"Killingspree.1370"+"</p>");
 			                //Updatet das Event im calender
 			                $('#calendar').fullCalendar('updateEvent', calEvent);
 			            }
@@ -147,11 +151,13 @@
                     bis: '18:30',
                     character: {
                         "chrono": {
+                            typ: "basic",
                             count:3,
-                            people_in:1,
+                            people_in:0,
                             teilnehmer: ''
                         },
                         "cranger": {
+                            typ: "condi_dps",
                             count: 3,
                             people_in: 0,
                             teilnehmer: ''
