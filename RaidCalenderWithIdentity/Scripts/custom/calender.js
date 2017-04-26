@@ -36,4 +36,11 @@
         $("#createEvent").css("display", "none");
         $("#detailEvent").css("display", "none");
     });
+    $.ajax({
+        url: "/Home/GetData",
+        type: "GET",
+        success: function (data) {
+            $("#test").text(data);
+        }
+    });
 });

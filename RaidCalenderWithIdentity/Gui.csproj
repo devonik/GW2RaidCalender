@@ -216,40 +216,42 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\custom\window.css" />
-    <Content Include="Content\timepicker\timepicker.css" />
-    <Content Include="Content\timepicker\timepicker.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\klassen\chrono.png" />
-    <Content Include="img\klassen\condi.png" />
-    <Content Include="img\klassen\condi_druid.png" />
-    <Content Include="img\klassen\condi_ranger.png" />
-    <Content Include="img\klassen\condi_warrior.png" />
-    <Content Include="img\klassen\druid.png" />
-    <Content Include="img\klassen\guard.png" />
-    <Content Include="img\klassen\ingeneur.png" />
-    <Content Include="img\klassen\necro.png" />
-    <Content Include="img\klassen\revenant.png" />
-    <Content Include="img\klassen\tempest.png" />
-    <Content Include="img\klassen\thief.png" />
-    <Content Include="img\klassen\warrior.png" />
-    <Content Include="img\orte\bastion.png" />
-    <Content Include="img\orte\erlösungspass.png" />
-    <Content Include="img\orte\festung.png" />
-    <Content Include="img\orte\geistertal.png" />
-    <Content Include="img\rassen\Asura-icon.jpg" />
-    <Content Include="img\rassen\Menschen-icon.jpg" />
-    <Content Include="img\rassen\Norn-icon.jpg" />
-    <Content Include="img\rassen\Sylvari-icon.jpg" />
+    <Content Include="gw2RaidCalender\img\klassen\chrono.png" />
+    <Content Include="gw2RaidCalender\img\klassen\condi.png" />
+    <Content Include="gw2RaidCalender\img\klassen\condi_druid.png" />
+    <Content Include="gw2RaidCalender\img\klassen\condi_ranger.png" />
+    <Content Include="gw2RaidCalender\img\klassen\condi_warrior.png" />
+    <Content Include="gw2RaidCalender\img\klassen\druid.png" />
+    <Content Include="gw2RaidCalender\img\klassen\guard.png" />
+    <Content Include="gw2RaidCalender\img\klassen\ingeneur.png" />
+    <Content Include="gw2RaidCalender\img\klassen\necro.png" />
+    <Content Include="gw2RaidCalender\img\klassen\revenant.png" />
+    <Content Include="gw2RaidCalender\img\klassen\tempest.png" />
+    <Content Include="gw2RaidCalender\img\klassen\thief.png" />
+    <Content Include="gw2RaidCalender\img\klassen\warrior.png" />
+    <Content Include="gw2RaidCalender\img\orte\bastion.png" />
+    <Content Include="gw2RaidCalender\img\orte\erlösungspass.png" />
+    <Content Include="gw2RaidCalender\img\orte\festung.png" />
+    <Content Include="gw2RaidCalender\img\orte\geistertal.png" />
+    <Content Include="gw2RaidCalender\img\orte\geistertal_1000x562.png" />
+    <Content Include="gw2RaidCalender\img\orte\geistertal_200x113.png" />
+    <Content Include="gw2RaidCalender\img\rassen\Asura-icon.jpg" />
+    <Content Include="gw2RaidCalender\img\rassen\Menschen-icon.jpg" />
+    <Content Include="gw2RaidCalender\img\rassen\Norn-icon.jpg" />
+    <Content Include="gw2RaidCalender\img\rassen\Sylvari-icon.jpg" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\custom\createWindow.css" />
+    <Content Include="Scripts\custom\detailWindow.css" />
+    <Content Include="Scripts\custom\window.css" />
     <Content Include="Scripts\eventtimer\moment.min.js" />
     <Content Include="Scripts\eventtimer\script.js" />
     <Content Include="Scripts\eventtimer\style.css" />
@@ -380,7 +382,9 @@
     <Content Include="Scripts\timepickerByjonthornton\jquery.timepicker.css" />
     <Content Include="Scripts\timepickerByjonthornton\jquery.timepicker.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -432,6 +436,12 @@
       <DependentUpon>201704221429355_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{b1552807-e598-4215-8b39-a69036b43e29}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -446,15 +456,14 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50117</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50117/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://nik-pc:1237</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

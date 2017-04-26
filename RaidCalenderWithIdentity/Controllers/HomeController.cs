@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,12 @@ namespace RaidCalenderWithIdentity.Controllers
             ViewBag.Username = User.Identity.Name;
             return View(ViewBag);
         }
-        
+        public JsonResult GetData()
+        {
+            RaidCalenderRepository repo = new RaidCalenderRepository();
+            
+                return Json(repo.GetData());
+            
+        }
     }
 }

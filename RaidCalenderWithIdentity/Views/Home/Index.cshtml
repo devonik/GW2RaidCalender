@@ -21,7 +21,7 @@
         padding: 50px 10px 0 0;
     }
 </style>
-
+<h1 id="test"></h1>
 <div id='calendar'></div>
 @Html.Partial("_detailEvent")
 @Html.Partial("_createEvent")
@@ -77,7 +77,7 @@
 			    $("#von").text(calEvent.von);
 			    $("#bis").text(calEvent.bis);
 			    if (!(typeof calEvent.title === "undefined")) {
-			        $("#detail_raidImg").html("<img src='/img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
+			        $("#detail_raidImg").html("<img src='/gw2RaidCalender/img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
 			    }
 			    $("#detail_table_body").html("");
 			    if (!(typeof calEvent.character === "undefined")) {
@@ -85,7 +85,7 @@
 			            //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
 			            $("#detail_table_body").append("<tr>" +
                                                             "<td>"+
-                                                                "<img src='/img/klassen/" + char + ".png'/>"+
+                                                                "<img src='/gw2RaidCalender/img/klassen/" + char + ".png'/>" +
                                                                 char + " : <span title='Maximal'>" + value.count + "</span>" +
                                                             "</td>" +
                                                             "<td>" +
@@ -156,7 +156,7 @@
                             people_in:0,
                             teilnehmer: ''
                         },
-                        "cranger": {
+                        "condi_ranger": {
                             typ: "condi_dps",
                             count: 3,
                             people_in: 0,

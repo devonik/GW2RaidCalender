@@ -12,9 +12,9 @@
             <h2>Event hinzufügen</h2>
         </div>
         <div class="modal-body">
-            <form name="eventForm" novalidate>
+            <form name="eventForm" style="width:100%;"  novalidate>
                 <fieldset class="form-group">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label>Wähle einen Typ</label>
                         <select class="form-control" ng-model="event.typ" required>
                             <option value="raid">Raid</option>
@@ -40,17 +40,16 @@
                         <label>Bezeichnung:</label>
                         <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
                     </div>
-                    <div class="col-md-2" style="width:10%">
+                    <div class="col-md-2">
                         <label>Von:</label>
                         <input type="text" ng-model="event.von" id="cvon" class="timepicker form-control" style="width:6.5em" required />
                     </div>
-                    <div class="col-md-2" style="width:10%">
+                    <div class="col-md-2">
                         <label>Bis:</label>
                         <input type="text" ng-model="event.bis" id="cbis" class="timepicker form-control" style="width:6.5em" required />
                     </div>
                 </fieldset>
                 <fieldset class="form-group">
-                    <label>Character</label>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -202,11 +201,11 @@
                 </fieldset>
             </form>
         </div>
-        <div class="modal-footer">
-            @*<p>form = {{event}}</p>
+        @*<div class="modal-footer">
+            <p>form = {{event}}</p>
             <p>master = {{master}}</p>
-            <h3>Modal Footer</h3>*@
-        </div>
+            <h3>Modal Footer</h3>
+        </div>*@
     </div>
 
 </div>

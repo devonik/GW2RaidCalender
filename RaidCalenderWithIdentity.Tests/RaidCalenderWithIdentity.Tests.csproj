@@ -92,9 +92,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RaidCalenderWithIdentity\RaidCalenderWithIdentity.csproj">
+    <ProjectReference Include="..\RaidCalenderWithIdentity\Gui.csproj">
       <Project>{EA50FA99-8F77-4C98-825E-C08BDBD63B18}</Project>
-      <Name>RaidCalenderWithIdentity</Name>
+      <Name>Gui</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
