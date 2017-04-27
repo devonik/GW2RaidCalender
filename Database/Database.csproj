@@ -45,8 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handler\LocalDbHandler.cs" />
     <Compile Include="Handler\MssqlHandler.cs" />
     <Compile Include="Handler\MysqlHandler.cs" />
+    <Compile Include="Model\RassenModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\RaidCalenderRepository.cs" />
   </ItemGroup>

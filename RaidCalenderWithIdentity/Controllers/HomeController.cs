@@ -12,13 +12,13 @@ namespace RaidCalenderWithIdentity.Controllers
         public ActionResult Index()
         {
             ViewBag.Username = User.Identity.Name;
-            return View(ViewBag);
+            return View(from ApplicationUserManager.Rassen );
         }
-        public JsonResult GetData()
+        public String GetData()
         {
             RaidCalenderRepository repo = new RaidCalenderRepository();
             
-                return Json(repo.GetData());
+                return repo.GetData();
             
         }
     }

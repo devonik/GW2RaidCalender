@@ -239,7 +239,7 @@
     <Content Include="gw2RaidCalender\img\orte\geistertal.png" />
     <Content Include="gw2RaidCalender\img\orte\geistertal_1000x562.png" />
     <Content Include="gw2RaidCalender\img\orte\geistertal_200x113.png" />
-    <Content Include="gw2RaidCalender\img\rassen\Asura-icon.jpg" />
+    <Content Include="gw2RaidCalender\img\rassen\Asura.jpg" />
     <Content Include="gw2RaidCalender\img\rassen\Menschen-icon.jpg" />
     <Content Include="gw2RaidCalender\img\rassen\Norn-icon.jpg" />
     <Content Include="gw2RaidCalender\img\rassen\Sylvari-icon.jpg" />

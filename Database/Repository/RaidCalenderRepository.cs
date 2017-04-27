@@ -8,30 +8,34 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Configuration;
+using Database.Model;
 
 namespace Database.Repository
 {
-    public class RaidCalenderRepository : MysqlHandler
+    public class RaidCalenderRepository/* : LocalDbHandler*/
     {
-        public IEnumerable GetData()
-        {
-            MySqlDataReader dataReader;
-            using (MySqlCommand command = new MySqlCommand())
-            {
-                command.CommandText = "Select * from test";
-                command.CommandType = CommandType.Text;
+        private ApplicationIdentity db = new Appl();
+        private string _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        //public IEnumerable GetData()
+        //{
+        //    MySqlDataReader dataReader;
+        //    using (MySqlCommand command = new MySqlCommand())
+        //    {
+        //        command.CommandText = "Select * from test";
+        //        command.CommandType = CommandType.Text;
 
-                OpenConnection();
+        //        OpenConnection();
 
-                dataReader = command.ExecuteReader();
+        //        dataReader = command.ExecuteReader();
 
-                CloseConnection();
-            }
-            return dataReader;
+        //        CloseConnection();
+        //    }
+        //    return dataReader;
 
-        }
+        //}
 
-        //public IEnumerable GetDataMssql()
+        //public IEnumerable GetData()
         //{
         //    SqlDataReader reader;
 
@@ -48,6 +52,26 @@ namespace Database.Repository
         //    return reader;
 
         //}
+        public String GetData()
+        {
+            List<RassenModel> data = new List<RassenModel>();
+            SqlConnection con = new SqlConnection(_connectionString);
+            con.Open();
+            using (con)
+            {
+                SqlCommand command = new SqlCommand("Select * from User");
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+
+                }
+                return "Test";
+            }
+            
+
+        }
 
     }
 }

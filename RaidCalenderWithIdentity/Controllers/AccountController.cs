@@ -168,7 +168,7 @@ namespace RaidCalenderWithIdentity.Controllers
                 AddErrors(result);
             }
 
-            // Wurde dieser Punkt erreicht, ist ein Fehler aufgetreten; Formular erneut anzeigen.
+            // Wurde dieser Punkt erreicht, ist ein Fehler aufgetreten; Formular erneut anzeigen.F
             return View(model);
         }
 
