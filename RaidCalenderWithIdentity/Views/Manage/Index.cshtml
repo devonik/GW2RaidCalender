@@ -1,43 +1,67 @@
-﻿@model RaidCalenderWithIdentity.Models.IndexViewModel
+﻿@model Calender.Models.IndexViewModel
 @{
-    ViewBag.Title = "Verwalten";
+    ViewBag.Title = "Ändere dein Profil";
 }
+<style>
+    #user_profil {
+        display: flex;
+        flex-direction: column;
+        background: #f9f9f9;
+    }
 
+        #user_profil div {
+            display: -webkit-box;
+            margin-bottom:15px;
+        }
+</style>
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Kontoeinstellungen ändern</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Kennwort:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Kennwort ändern", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Erstellen", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>Externe Anmeldungen:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Verwalten", "ManageLogins") ]
-        </dd>
+<div id="user_profil">
+    <header>
+        <h2>Profil:</h2>
+    </header>
+    <main class="main">
+        <div>
+            <label class="col-md-3 control-label">Username:</label>
+            <div class="col-md-6">
+                 @Model.Username
+            </div>
+        </div>
+        <div>
+            <label class="col-md-3 control-label">Passwort:</label>
+            <div class="col-md-6">
+                <a href="@Url.Action("ChangePassword","Manage")" class="btn btn-info btn-sm" target="_blank">
+                    <span class="glyphicon glyphicon-pencil"></span> Ändern
+                    @*@if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Ändere dein Passwort", "ChangePassword")
+                }
+                else
+                {
+                    @Html.ActionLink("Erstellen", "SetPassword")
+                }*@
+                </a>
+            </div>
+        </div>
+        <div>
+            <label class="col-md-3 control-label">External Logins: @Model.Logins.Count</label>
+            <div class="col-md-6">
+                <a href="@Url.Action("ManageLogins","Manage")" class="btn btn-info btn-sm" target="_blank">
+                    <span class="glyphicon glyphicon-edit"></span> Ändern
+                </a>
+            </div>
+        </div>
         @*
-            Telefonnummern können als zweite Stufe in einem zweistufigen Authentifizierungssystem verwendet werden.
-             
-             In <a href="http://go.microsoft.com/fwlink/?LinkId=403804">diesem Artikel</a>
-                finden Sie Details zum Einrichten dieser ASP.NET-Anwendung für die Unterstützung zweistufiger Authentifizierung mithilfe von SMS.
-             
-             Entfernen Sie den Kommentar für den folgenden Block, nachdem Sie zweistufige Authentifizierung eingerichtet haben.
+            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+             See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+             Uncomment the following block after you have set up two-factor authentication
         *@
-        @*  
-            <dt>Telefonnummer:</dt>
+        @*
+            <dt>Phone Number:</dt>
             <dd>
                 @(Model.PhoneNumber ?? "None")
                 @if (Model.PhoneNumber != null)
@@ -56,19 +80,20 @@
                 }
             </dd>
         *@
-        <dt>Zweistufige Authentifizierung:</dt>
-        <dd>
-            <p>
-                Es sind keine Anbieter für zweistufige Authentifizierung konfiguriert. In <a href="http://go.microsoft.com/fwlink/?LinkId=403804">diesem Artikel</a>
-                            finden Sie Details zum Einrichten dieser ASP.NET-Anwendung für die Unterstützung  zweistufiger Authentifizierung.
-            </p>
+
+        <div>
+            <label class="col-md-3 control-label">Two-Factor Authentication:</label>
+            <div class="col-md-6">
+                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication.
+            </div>
             @*@if (Model.TwoFactor)
                 {
                     using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
-                        <text>Aktiviert
-                        <input type="submit" value="Deaktivieren" class="btn btn-link" />
+                        <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
                         </text>
                     }
                 }
@@ -77,11 +102,108 @@
                     using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
-                        <text>Deaktiviert
-                        <input type="submit" value="Aktivieren" class="btn btn-link" />
+                        <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
                         </text>
                     }
                 }*@
-        </dd>
-    </dl>
+        </div>
+        <div>
+            <label class="col-md-3 control-label">Charaktere</label>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rasse</th>
+                            <th>Klasse</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="addChar_table_body"></tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <button id="addChar" class="btn btn-info btn-sm" target="_blank">
+                    <span class="glyphicon glyphicon-plus-sign"></span> Hinzufügen
+                </button>
+            </div>
+        </div>
+    </main>
 </div>
+<link href="~/Scripts/custom/detailWindow.css" rel="stylesheet" />
+<div id="addCharWindow" ng-app="user" class="modal" ng-controller="UserCharController">
+    <!-- Modal content -->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Modal Header</h2>
+        </div>
+        <form name="addCharForm" class="modal-body" novalidate>
+            <div class="row">
+                <div>
+                    <label class="col-md-3 control-label">Rasse:</label>
+                    <select ng-model="user.char.rasse" class='form-control' required>
+                        <option>Char</option>
+                        <option>Asura</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="col-md-3 control-label">Klasse:</label>
+                    <select ng-model="user.char.klasse" class='form-control' required>
+                        <option>Tempest</option>
+                        <option>Condi Ranger</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="col-md-3 control-label">Name:</label>
+                    <input ng-model="user.char.name" class="form-control" placeholder="Hier den Namen eingeben..." required>
+                </div>
+            </div>
+        </form>
+        <div class="modal-footer">
+            <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
+            <input ng-click="update(user)" class="btn btn-primary pull-right" ng-disabled="addCharForm.$invalid" value="Speichern" />
+        </div>
+    </div>
+
+</div>
+<script>
+    function addNewChartoTable(rasse, klasse, name) {
+        $("#addChar_table_body").append("<tr>" +
+                                            "<td>" +
+                                                "<img title='"+rasse+"' src='/img/klassen/" + rasse + ".png' alt='" + rasse + "'/>" +
+                                            "</td>" +
+                                            "<td>" +
+                                                "<span title='Klasse'>" + klasse + "</span>" +
+                                            "<td>" +
+                                                "<span title='Klasse'>" + name + "</span>" +
+                                            "</td>" +
+                                        "</tr>");
+    }
+    $("#addChar").click(function () {
+        $("#addCharWindow.modal").css("display", "block");
+    });
+    var eventApp = angular.module('user', []);
+    eventApp.controller('UserCharController', ['$scope', function ($scope) {
+        console.log("im UserCharController controller");
+        $scope.update = function (user) {
+            if ($scope.addCharForm.$valid) {
+                console.log(user);
+                $.each(user, function (char, user) {
+                    addNewChartoTable(user.rasse, user.klasse, user.name);
+                });
+                $scope.user = {};
+                ////Close the Window and reset the create form
+                $("#addCharWindow.modal").css("display", "none");
+            }
+        };
+
+        $scope.reset = function () {
+            //reset all inputs
+            $scope.user = {};
+        };
+
+        $scope.reset();
+    }]);
+</script>
