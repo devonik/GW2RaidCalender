@@ -52,10 +52,6 @@ namespace RaidCalenderWithIdentity.Models
         [Display(Name = "Username")]
         public string Username { get; set; }
         
-        [Display(Name = "E-Mail")]
-        [EmailAddress]
-        public string Email { get; set; }
-
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Kennwort")]

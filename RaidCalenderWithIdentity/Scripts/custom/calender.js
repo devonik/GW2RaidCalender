@@ -33,14 +33,6 @@
     //$('#cbis').timepicker('setTime', new Date());
     $(".close").click(function () {
         console.log("click close");
-        $("#createEvent").css("display", "none");
-        $("#detailEvent").css("display", "none");
-    });
-    $.ajax({
-        url: "/Home/GetData",
-        type: "GET",
-        success: function (data) {
-            $("#test").text(data);
-        }
+        $(".modal").css("display", "none");
     });
 });

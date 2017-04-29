@@ -175,9 +175,9 @@ namespace RaidCalenderWithIdentity.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
+        public async Task<ActionResult> ConfirmEmail(int userId, string code)
+        { 
+            if (userId == default(int) || code == null)
             {
                 return View("Error");
             }
@@ -288,7 +288,7 @@ namespace RaidCalenderWithIdentity.Controllers
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            if (userId == default(int))
             {
                 return View("Error");
             }

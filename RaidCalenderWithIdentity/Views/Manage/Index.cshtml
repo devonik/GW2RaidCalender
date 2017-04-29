@@ -1,4 +1,5 @@
-﻿@model Calender.Models.IndexViewModel
+﻿@using Microsoft.AspNet.Identity
+@model RaidCalenderWithIdentity.Models.IndexViewModel
 @{
     ViewBag.Title = "Ändere dein Profil";
 }
@@ -15,195 +16,342 @@
         }
 </style>
 <h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div id="user_profil">
-    <header>
-        <h2>Profil:</h2>
-    </header>
-    <main class="main">
-        <div>
-            <label class="col-md-3 control-label">Username:</label>
-            <div class="col-md-6">
-                 @Model.Username
-            </div>
-        </div>
-        <div>
-            <label class="col-md-3 control-label">Passwort:</label>
-            <div class="col-md-6">
-                <a href="@Url.Action("ChangePassword","Manage")" class="btn btn-info btn-sm" target="_blank">
-                    <span class="glyphicon glyphicon-pencil"></span> Ändern
-                    @*@if (Model.HasPassword)
-                {
-                    @Html.ActionLink("Ändere dein Passwort", "ChangePassword")
-                }
-                else
-                {
-                    @Html.ActionLink("Erstellen", "SetPassword")
-                }*@
-                </a>
-            </div>
-        </div>
-        <div>
-            <label class="col-md-3 control-label">External Logins: @Model.Logins.Count</label>
-            <div class="col-md-6">
-                <a href="@Url.Action("ManageLogins","Manage")" class="btn btn-info btn-sm" target="_blank">
-                    <span class="glyphicon glyphicon-edit"></span> Ändern
-                </a>
-            </div>
-        </div>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-
-             See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-
-        <div>
-            <label class="col-md-3 control-label">Two-Factor Authentication:</label>
-            <div class="col-md-6">
-                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </div>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </div>
-        <div>
-            <label class="col-md-3 control-label">Charaktere</label>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Rasse</th>
-                            <th>Klasse</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="addChar_table_body"></tbody>
-                </table>
-            </div>
-            <div class="col-md-3">
-                <button id="addChar" class="btn btn-info btn-sm" target="_blank">
-                    <span class="glyphicon glyphicon-plus-sign"></span> Hinzufügen
-                </button>
-            </div>
-        </div>
-    </main>
-</div>
-<link href="~/Scripts/custom/detailWindow.css" rel="stylesheet" />
-<div id="addCharWindow" ng-app="user" class="modal" ng-controller="UserCharController">
-    <!-- Modal content -->
-    <div class="modal-content">
-
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Modal Header</h2>
-        </div>
-        <form name="addCharForm" class="modal-body" novalidate>
-            <div class="row">
-                <div>
-                    <label class="col-md-3 control-label">Rasse:</label>
-                    <select ng-model="user.char.rasse" class='form-control' required>
-                        <option>Char</option>
-                        <option>Asura</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="col-md-3 control-label">Klasse:</label>
-                    <select ng-model="user.char.klasse" class='form-control' required>
-                        <option>Tempest</option>
-                        <option>Condi Ranger</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="col-md-3 control-label">Name:</label>
-                    <input ng-model="user.char.name" class="form-control" placeholder="Hier den Namen eingeben..." required>
+<div ng-app="user" ng-controller="UserCharController as CharCtrl">
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div id="user_profil">
+        <header>
+            <h2>Profil:</h2>
+        </header>
+        <main class="main">
+            <div>
+                <label class="col-md-3 control-label">Username:</label>
+                <div class="col-md-6">
+                    @User.Identity.GetUserName()
                 </div>
             </div>
-        </form>
-        <div class="modal-footer">
-            <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
-            <input ng-click="update(user)" class="btn btn-primary pull-right" ng-disabled="addCharForm.$invalid" value="Speichern" />
-        </div>
+            <div>
+                <label class="col-md-3 control-label">Passwort:</label>
+                <div class="col-md-6">
+                    <a href="@Url.Action("ChangePassword","Manage")" class="btn btn-info btn-sm" target="_blank">
+                        <span class="glyphicon glyphicon-pencil"></span> Ändern
+                        @*@if (Model.HasPassword)
+                            {
+                                @Html.ActionLink("Ändere dein Passwort", "ChangePassword")
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Erstellen", "SetPassword")
+                            }*@
+                    </a>
+                </div>
+            </div>
+            <div>
+                <label class="col-md-3 control-label">External Logins: @Model.Logins.Count</label>
+                <div class="col-md-6">
+                    <a href="@Url.Action("ManageLogins","Manage")" class="btn btn-info btn-sm" target="_blank">
+                        <span class="glyphicon glyphicon-edit"></span> Ändern
+                    </a>
+                </div>
+            </div>
+            @*
+                Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                 See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                 Uncomment the following block after you have set up two-factor authentication
+            *@
+            @*
+                <dt>Phone Number:</dt>
+                <dd>
+                    @(Model.PhoneNumber ?? "None")
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <br />
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                        }
+                    }
+                    else
+                    {
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                    }
+                </dd>
+            *@
+
+            <div>
+                <label class="col-md-3 control-label">Two-Factor Authentication:</label>
+                <div class="col-md-6">
+                    There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication.
+                </div>
+                @*@if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }*@
+            </div>
+            <div>
+                <label class="col-md-3 control-label">Charaktere</label>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rasse</th>
+                                <th>Klasse</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addChar_table_body">
+                            <tr ng-repeat="char in charlist">
+                                <td>
+                                    <img title='{{char.rasse_name}}' src='{{char.rasse_img}}' alt='{{char.rasse_name}}' />
+                                </td>
+                                <td>
+                                    <img title='{{char.klasse_name}}' src='{{char.klasse_img}}' alt='{{char.klasse_name}}' />
+                                <td>
+                                    <label title='Klasse'>{{char.char_name}}</label>
+                                </td>
+                                <td>
+                                    <button class='fa fa-trash' aria-hidden='true' ng-click='deleteChar(char.Klasse2User_Id, $index)'></button>
+                                </td>
+                            </tr>
+                            <newChars></newChars>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <button id="addChar" class="btn btn-info btn-sm" target="_blank">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Hinzufügen
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
+    <div id="addCharWindow" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Modal Header</h2>
+            </div>
+            <form name="addCharForm" class="modal-body" novalidate>
+                <div class="row">
+                    <div>
+                        <label class="col-md-3 control-label">Rasse:</label>
+                        <select ng-model="user.char.selectedRasse" ng-options="item.Bezeichnung for item in rassen track by item.Rasse_Id" class='form-control' required>
+                            @*<option value="">Wählen eine Rasse...</option>*@
+                        </select>
+                    </div>
+                    <div>
+                        <label class="col-md-3 control-label">Klasse:</label>
+                        <select ng-model="user.char.selectedKlasse" ng-options="item.Bezeichnung for item in klassen track by item.Klasse_Id" class='form-control' required></select>
+                    </div>
+                    <div>
+                        <label class="col-md-3 control-label">Name:</label>
+
+                        <input ng-model="user.char.name" class="form-control" placeholder="Hier den Namen eingeben..." required>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
+                <input ng-click="update(user)" class="btn btn-primary pull-right" ng-disabled="addCharForm.$invalid" value="Speichern" />
+            </div>
+        </div>
+
+    </div>
 </div>
 <script>
-    function addNewChartoTable(rasse, klasse, name) {
+    
+    
+    function addNewChartoTable(charObject) {
+
         $("#addChar_table_body").append("<tr>" +
                                             "<td>" +
-                                                "<img title='"+rasse+"' src='/img/klassen/" + rasse + ".png' alt='" + rasse + "'/>" +
+                                                "<img src='" + charObject.selectedRasse.Avatarlink + "' title='" + charObject.selectedRasse.Bezeichnung + "' alt='" + charObject.selectedRasse.Bezeichnung + "'/>" +
                                             "</td>" +
                                             "<td>" +
-                                                "<span title='Klasse'>" + klasse + "</span>" +
+                                                "<img src='" + charObject.selectedKlasse.Avatarlink + "' title='" + charObject.selectedKlasse.Bezeichnung + "' alt='" + charObject.selectedKlasse.Bezeichnung + "'/>" +
                                             "<td>" +
-                                                "<span title='Klasse'>" + name + "</span>" +
+                                                "<label title='Klasse'>" + charObject.name + "</label>" +
                                             "</td>" +
+                                            "<td>" +
+                                                "<button class='fa fa-trash' aria-hidden='true' ng-click='deleteChar(" + charObject.Klasse2User_Id + ", $index)'></button>" +
+                                            "</td>"+
                                         "</tr>");
     }
     $("#addChar").click(function () {
         $("#addCharWindow.modal").css("display", "block");
     });
     var eventApp = angular.module('user', []);
-    eventApp.controller('UserCharController', ['$scope', function ($scope) {
-        console.log("im UserCharController controller");
+    eventApp.controller('UserCharController', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+        $http.get('/Home/GetUserCharsByCurrentUser').then(function (result) {
+            console.log(result.data);
+            $scope.charlist = result.data;
+        });
+        $http({
+            method: 'GET',
+            url: '/Home/GetAllRace'
+        }).then(function successCallback(result) {
+            $scope.rassen = result.data;
+        }, function errorCallback(result) {
+        });
+        $http({
+            methode: 'GET',
+            url: '/Home/GetAllClasses',
+        }).then(function successCallback(result) {
+            $scope.klassen = result.data;
+        });
         $scope.update = function (user) {
             if ($scope.addCharForm.$valid) {
-                console.log(user);
-                $.each(user, function (char, user) {
-                    addNewChartoTable(user.rasse, user.klasse, user.name);
-                });
+                
+                //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
+                $http.post('/Home/AddNewCharToUser', {klasse_id : user.char.selectedKlasse.Klasse_Id, 
+                    rasse_id : user.char.selectedRasse.Rasse_Id,
+                    bezeichnung : user.char.name
+                }).then(function successCallback(data) {
+                    console.log("successCallback");
+                    console.log(data);
+                    //Konvertierung des Json Objekts, damit es auf der Oberfläche direkt angezeigt werden kann. Das die Namen anders sind durch die Drop downs
+                    var char = { klasse_name: user.char.selectedKlasse.Bezeichnung, klasse_img: user.char.selectedKlasse.Avatarlink, rasse_name: user.char.selectedRasse.Bezeichnung, rasse_img: user.char.selectedRasse.Avatarlink, char_name: user.char.name }
+                    $scope.charlist.push(char);
+                    $scope.charlist.reload();
+                }),
+                    function errorCallback(result) {
+                    };
+            
                 $scope.user = {};
                 ////Close the Window and reset the create form
                 $("#addCharWindow.modal").css("display", "none");
             }
         };
-
+        //ERROR: Man kann den neuesten Eintrag nicht löschen, da noch keine 
+        $scope.deleteChar = function (char_id, index) {
+            var jsonOfCharlist = $scope.charlist;
+            if (confirm('Are you sure you want to delete this?')) {
+                //if (typeof char_id === "undefined") {
+                //    var jsonOfCharlist = $scope.charlist;
+                //    var latestId = jsonOfCharlist[jsonOfCharlist.length - 1].$$hashKey;
+                //    //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
+                //    $scope.charlist
+                //}
+                    var charlist = $scope.charlist;
+                    $http.post('/Home/DeleteChar', { id: char_id })
+                    .then(function (data, status, headers) {
+                        //Löscht die Zeile an der Oberfläche
+                        charlist.splice(index, 1)
+                        $scope.charlist = charlist;
+                    });
+            }
+            else {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                return false;
+            }
+        }
         $scope.reset = function () {
             //reset all inputs
             $scope.user = {};
         };
 
-        $scope.reset();
+        //$scope.reset();
     }]);
+    //eventApp.directive("newChars", ['$compile', '$scope', function ($compile, $scope) {
+    //    $scope.update = function (user) {
+    //        if ($scope.addCharForm.$valid) {
+    //            //$.each(user, function (char, user) {
+    //            //AddNewCharToUser(int klasse_id, int rasse_id, string bezeichnung)
+    //            $http.post('/Home/AddNewCharToUser', {
+    //                klasse_id: user.char.selectedKlasse.Klasse_Id,
+    //                rasse_id: user.char.selectedRasse.Rasse_Id,
+    //                bezeichnung: user.char.name
+    //            }).then(function successCallback(data) {
+    //                template: "<tr>" +
+    //                                        "<td>" +
+    //                                            "<img src='" + user.char.selectedRasse.Avatarlink + "' title='" + user.char.selectedRasse.Bezeichnung + "' alt='" + user.char.selectedRasse.Bezeichnung + "'/>" +
+    //                                        "</td>" +
+    //                                        "<td>" +
+    //                                            "<img src='" + user.char.selectedKlasse.Avatarlink + "' title='" + user.char.selectedKlasse.Bezeichnung + "' alt='" + user.char.selectedKlasse.Bezeichnung + "'/>" +
+    //                                        "<td>" +
+    //                                            "<label title='Klasse'>" + user.char.name + "</label>" +
+    //                                        "</td>" +
+    //                                        "<td>" +
+    //                                            "<button class='fa fa-trash' aria-hidden='true' ng-click='deleteChar(user)'></button>" +
+    //                                        "</td>" +
+    //                                    "</tr>"
+    //            }),
+    //                function errorCallback(result) {
+    //                };
+
+    //            $scope.user = {};
+    //            ////Close the Window and reset the create form
+    //            $("#addCharWindow.modal").css("display", "none");
+    //        }
+    //    };
+    //    return {
+
+    //        restrict: 'E',
+    //        link: function (scope, elm) {
+    //            $scope.update = function (user) {
+                    
+    //                console.log(elm);
+    //                elm.after($compile('<newChars></newChars>')(scope));
+    //            }
+    //        }
+    //    };
+    //}]);
+    //eventApp.directive('initCharTable', ['$compile', '$http', function ($compile, $http) {
+    //    var htmlString = "";
+    //    $http.get('/Home/GetUserCharsByCurrentUser').then(function (result) {
+    //        angular.forEach(result.data, function (object, key) {
+    //            htmlString += "<tr>" +
+    //                                        "<td>" +
+    //                                            "<img title='" + object.rasse_name + "' src='" + object.rasse_img + "' alt='" + object.rasse_name + "'/>" +
+    //                                        "</td>" +
+    //                                        "<td>" +
+    //                                            "<img title='" + object.klasse_name + "' src='" + object.klasse_img + "' alt='" + object.klasse_name + "'/>" +
+    //                                        "<td>" +
+    //                                            "<label title='Klasse'>" + object.char_name + "</label>" +
+    //                                        "</td>" +
+    //                                        "<td>" +
+    //                                            "<button class='fa fa-trash' aria-hidden='true' ngclick='deleteChar(" + object.Klasse2User_Id + ");'></button>" +
+    //                                        "</td>" +
+    //                                    "</tr>";
+    //        });
+    //        console.log(htmlString);
+    //    });
+        
+    //    return {
+    //        link: function (scope, element, attrs) {
+    //            var newEl = angular.element('<span ng-show="showHint"> My Hint</span>');
+    //            element.on('mouseenter mouseleave', function () {
+    //                scope.$apply('showHint = !showHint');
+    //            });
+
+    //            attrs.$set('addMouseover', null); // To stop infinite compile loop
+    //            element.append(newEl);
+    //            $compile(element)(scope); // Double compilation
+    //        }
+    //    }
+    //}]);
 </script>
