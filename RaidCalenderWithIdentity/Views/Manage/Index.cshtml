@@ -123,10 +123,10 @@
                         <tbody id="addChar_table_body">
                             <tr ng-repeat="char in charlist">
                                 <td>
-                                    <img title='{{char.rasse_name}}' src='{{char.rasse_img}}' alt='{{char.rasse_name}}' />
+                                    <img title='{{char.rasse_name}}' src='@Url.Content("~/img/rassen/"){{char.rasse_img}}' alt='{{char.rasse_name}}' />
                                 </td>
                                 <td>
-                                    <img title='{{char.klasse_name}}' src='{{char.klasse_img}}' alt='{{char.klasse_name}}' />
+                                    <img title='{{char.klasse_name}}' src="@Url.Content("~/img/klassen/"){{char.klasse_img}}" alt='{{char.klasse_name}}' />
                                 <td>
                                     <label title='Klasse'>{{char.char_name}}</label>
                                 </td>
@@ -182,43 +182,24 @@
     </div>
 </div>
 <script>
-    
-    
-    function addNewChartoTable(charObject) {
-
-        $("#addChar_table_body").append("<tr>" +
-                                            "<td>" +
-                                                "<img src='" + charObject.selectedRasse.Avatarlink + "' title='" + charObject.selectedRasse.Bezeichnung + "' alt='" + charObject.selectedRasse.Bezeichnung + "'/>" +
-                                            "</td>" +
-                                            "<td>" +
-                                                "<img src='" + charObject.selectedKlasse.Avatarlink + "' title='" + charObject.selectedKlasse.Bezeichnung + "' alt='" + charObject.selectedKlasse.Bezeichnung + "'/>" +
-                                            "<td>" +
-                                                "<label title='Klasse'>" + charObject.name + "</label>" +
-                                            "</td>" +
-                                            "<td>" +
-                                                "<button class='fa fa-trash' aria-hidden='true' ng-click='deleteChar(" + charObject.Klasse2User_Id + ", $index)'></button>" +
-                                            "</td>"+
-                                        "</tr>");
-    }
     $("#addChar").click(function () {
         $("#addCharWindow.modal").css("display", "block");
     });
     var eventApp = angular.module('user', []);
     eventApp.controller('UserCharController', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
-        $http.get('/Home/GetUserCharsByCurrentUser').then(function (result) {
-            console.log(result.data);
+        $http.get('/Gw2RaidCalender/GetUserCharsByCurrentUser').then(function (result) {
             $scope.charlist = result.data;
         });
         $http({
             method: 'GET',
-            url: '/Home/GetAllRace'
+            url: '/Gw2RaidCalender/GetAllRace'
         }).then(function successCallback(result) {
             $scope.rassen = result.data;
         }, function errorCallback(result) {
         });
         $http({
             methode: 'GET',
-            url: '/Home/GetAllClasses',
+            url: '/Gw2RaidCalender/GetAllClasses',
         }).then(function successCallback(result) {
             $scope.klassen = result.data;
         });
@@ -226,12 +207,11 @@
             if ($scope.addCharForm.$valid) {
                 
                 //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
-                $http.post('/Home/AddNewCharToUser', {klasse_id : user.char.selectedKlasse.Klasse_Id, 
+                $http.post('/Gw2RaidCalender/AddNewCharToUser', {
+                    klasse_id: user.char.selectedKlasse.Klasse_Id,
                     rasse_id : user.char.selectedRasse.Rasse_Id,
                     bezeichnung : user.char.name
                 }).then(function successCallback(data) {
-                    console.log("successCallback");
-                    console.log(data);
                     //Konvertierung des Json Objekts, damit es auf der Oberfläche direkt angezeigt werden kann. Das die Namen anders sind durch die Drop downs
                     var char = { klasse_name: user.char.selectedKlasse.Bezeichnung, klasse_img: user.char.selectedKlasse.Avatarlink, rasse_name: user.char.selectedRasse.Bezeichnung, rasse_img: user.char.selectedRasse.Avatarlink, char_name: user.char.name }
                     $scope.charlist.push(char);
@@ -249,14 +229,8 @@
         $scope.deleteChar = function (char_id, index) {
             var jsonOfCharlist = $scope.charlist;
             if (confirm('Are you sure you want to delete this?')) {
-                //if (typeof char_id === "undefined") {
-                //    var jsonOfCharlist = $scope.charlist;
-                //    var latestId = jsonOfCharlist[jsonOfCharlist.length - 1].$$hashKey;
-                //    //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
-                //    $scope.charlist
-                //}
                     var charlist = $scope.charlist;
-                    $http.post('/Home/DeleteChar', { id: char_id })
+                $http.post('/Gw2RaidCalender/DeleteChar', { id: char_id })
                     .then(function (data, status, headers) {
                         //Löscht die Zeile an der Oberfläche
                         charlist.splice(index, 1)
@@ -276,82 +250,4 @@
 
         //$scope.reset();
     }]);
-    //eventApp.directive("newChars", ['$compile', '$scope', function ($compile, $scope) {
-    //    $scope.update = function (user) {
-    //        if ($scope.addCharForm.$valid) {
-    //            //$.each(user, function (char, user) {
-    //            //AddNewCharToUser(int klasse_id, int rasse_id, string bezeichnung)
-    //            $http.post('/Home/AddNewCharToUser', {
-    //                klasse_id: user.char.selectedKlasse.Klasse_Id,
-    //                rasse_id: user.char.selectedRasse.Rasse_Id,
-    //                bezeichnung: user.char.name
-    //            }).then(function successCallback(data) {
-    //                template: "<tr>" +
-    //                                        "<td>" +
-    //                                            "<img src='" + user.char.selectedRasse.Avatarlink + "' title='" + user.char.selectedRasse.Bezeichnung + "' alt='" + user.char.selectedRasse.Bezeichnung + "'/>" +
-    //                                        "</td>" +
-    //                                        "<td>" +
-    //                                            "<img src='" + user.char.selectedKlasse.Avatarlink + "' title='" + user.char.selectedKlasse.Bezeichnung + "' alt='" + user.char.selectedKlasse.Bezeichnung + "'/>" +
-    //                                        "<td>" +
-    //                                            "<label title='Klasse'>" + user.char.name + "</label>" +
-    //                                        "</td>" +
-    //                                        "<td>" +
-    //                                            "<button class='fa fa-trash' aria-hidden='true' ng-click='deleteChar(user)'></button>" +
-    //                                        "</td>" +
-    //                                    "</tr>"
-    //            }),
-    //                function errorCallback(result) {
-    //                };
-
-    //            $scope.user = {};
-    //            ////Close the Window and reset the create form
-    //            $("#addCharWindow.modal").css("display", "none");
-    //        }
-    //    };
-    //    return {
-
-    //        restrict: 'E',
-    //        link: function (scope, elm) {
-    //            $scope.update = function (user) {
-                    
-    //                console.log(elm);
-    //                elm.after($compile('<newChars></newChars>')(scope));
-    //            }
-    //        }
-    //    };
-    //}]);
-    //eventApp.directive('initCharTable', ['$compile', '$http', function ($compile, $http) {
-    //    var htmlString = "";
-    //    $http.get('/Home/GetUserCharsByCurrentUser').then(function (result) {
-    //        angular.forEach(result.data, function (object, key) {
-    //            htmlString += "<tr>" +
-    //                                        "<td>" +
-    //                                            "<img title='" + object.rasse_name + "' src='" + object.rasse_img + "' alt='" + object.rasse_name + "'/>" +
-    //                                        "</td>" +
-    //                                        "<td>" +
-    //                                            "<img title='" + object.klasse_name + "' src='" + object.klasse_img + "' alt='" + object.klasse_name + "'/>" +
-    //                                        "<td>" +
-    //                                            "<label title='Klasse'>" + object.char_name + "</label>" +
-    //                                        "</td>" +
-    //                                        "<td>" +
-    //                                            "<button class='fa fa-trash' aria-hidden='true' ngclick='deleteChar(" + object.Klasse2User_Id + ");'></button>" +
-    //                                        "</td>" +
-    //                                    "</tr>";
-    //        });
-    //        console.log(htmlString);
-    //    });
-        
-    //    return {
-    //        link: function (scope, element, attrs) {
-    //            var newEl = angular.element('<span ng-show="showHint"> My Hint</span>');
-    //            element.on('mouseenter mouseleave', function () {
-    //                scope.$apply('showHint = !showHint');
-    //            });
-
-    //            attrs.$set('addMouseover', null); // To stop infinite compile loop
-    //            element.append(newEl);
-    //            $compile(element)(scope); // Double compilation
-    //        }
-    //    }
-    //}]);
 </script>

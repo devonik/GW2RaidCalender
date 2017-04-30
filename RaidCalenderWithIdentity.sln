@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaidCalenderWithIdentity.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - UI", "01 - UI", "{E3A1673A-414A-43CC-9A9F-739B2720CD09}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Repo", "02 - Repo", "{2E11EF84-242C-452D-A8E5-C5934E092647}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{B1552807-E598-4215-8B39-A69036B43E29}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,16 +23,11 @@ Global
 		{34DF029E-1FC6-4F54-A6DB-BBA6FA42D1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34DF029E-1FC6-4F54-A6DB-BBA6FA42D1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34DF029E-1FC6-4F54-A6DB-BBA6FA42D1F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1552807-E598-4215-8B39-A69036B43E29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1552807-E598-4215-8B39-A69036B43E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1552807-E598-4215-8B39-A69036B43E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1552807-E598-4215-8B39-A69036B43E29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EA50FA99-8F77-4C98-825E-C08BDBD63B18} = {E3A1673A-414A-43CC-9A9F-739B2720CD09}
-		{B1552807-E598-4215-8B39-A69036B43E29} = {2E11EF84-242C-452D-A8E5-C5934E092647}
 	EndGlobalSection
 EndGlobal
