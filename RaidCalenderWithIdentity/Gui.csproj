@@ -213,6 +213,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RaidModel.cs" />
     <Compile Include="Models\RasseModel.cs" />
+    <Compile Include="Models\ViewEvent.cs" />
     <Compile Include="Models\ViewKlassenModel.cs" />
     <Compile Include="Models\ViewUserCharsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

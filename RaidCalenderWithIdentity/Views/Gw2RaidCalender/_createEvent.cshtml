@@ -46,7 +46,7 @@
                 <fieldset class="form-group">
                     <div class="table-responsive">
                         <table class="table table-striped">
-                            {{event}}
+                            {{event.title.Raid_Id}}
                             <tbody>
                                 <tr ng-repeat="item in classes track by $index">
                                         <td>
@@ -183,6 +183,7 @@
     var eventApp = angular.module('addEvent', []);
     eventApp.controller('AddEventController', ['$scope', '$http', function ($scope, $http) {
         console.log("im AddEventController controller");
+        
         $http({
             method: 'GET',
             url: '@Url.Content("~/Gw2RaidCalender/GetAllRaids")'
@@ -241,23 +242,14 @@
             //console.log(event.class);
             if ($scope.eventForm.$valid) {
                 if (event.typ.Bezeichnung == 'Raid') {
-                    event.title = event.title.Bezeichnung
+                    var raidId = event.title.Raid_Id;
+                    alert(raidId);
+                    event.title = event.title.Bezeichnung;
                 }
-                var saveEventObject = { Eventart_Id: event.typ.Eventart_Id, Bezeichnung: event.title, startTag: event_start._i, endeTag: event_ende._i, startUhrzeit: event.von, endeUhrzeit: event.bis };
-                //var klassenModel = { event.class };
-                //$.each($scope.classes, function (key, value) {
-                //    console.log(value);
-                //    console.log(event.class)
-                //    if (value.Bezeichnung == event.class) {
-
-                //    }
-                //});
+                var saveEventObject = { Eventart_Id: event.typ.Eventart_Id, Raid_Id: raidId, Bezeichnung: event.title, startTag: event_start._d, endeTag: event_ende._d, startUhrzeit: event.von, endeUhrzeit: event.bis };
                 var newJson = [];
                 //Zusammensetzen des benötigten Json zum speichern der Klassen infos
                 $.each(event.class, function (key, value) {
-                    console.log(key);
-                    console.log(value);
-
                     newJson.push({ Klasse_Id: parseInt(key), MaxTeilnehmer: value.MaxTeilnehmer });
                 });
                 console.log("new json:");
@@ -271,35 +263,35 @@
                 }).then(function successCallback(result) {
                     console.log(result.data);
                 }),
-                    function errorCallback(result) {
-                        console.log(result.data);
-                    };
-                //$('#calendar').fullCalendar('addEventSource', function () {
-                //    console.log(" addEventSource calender in angular");
-                //    if (event.typ.Bezeichnung == 'Raid') {
-                //        event.title = event.title.Bezeichnung
-                //    }
-                //    //Merged das event object aus der form
-                //    //und die parameter start und end aus dem calender
-                //    var eventNew = $.extend(true, this.settings, event, { start: event_start, end: event_ende });
-                //    console.log(event_start);
-                //    console.log(event_ende);
-                //    $.each(eventNew.character, function (charItem) {
-                //        console.log(charItem);
-                //        //Die akutell angemeldeten User
-                //        eventNew.character[charItem].people_in = 0;
-                //        eventNew.character[charItem].teilnehmer = "";
-                //    });
+                function errorCallback(result) {
+                    console.log(result.data);
+                };
+                $('#calendar').fullCalendar('addEventSource', function () {
+                    console.log(" addEventSource calender in angular");
+                    //if (event.typ.Bezeichnung == 'Raid') {
+                        //event.title = event.title.Bezeichnung
+                    //}
+                    ////Merged das event object aus der form
+                    ////und die parameter start und end aus dem calender
+                    var eventNew = $.extend(true, this.settings, event, { start: event_start._d, end: event_ende._d });
+                    //console.log(event_start);
+                    //console.log(event_ende);
+                    //$.each(eventNew.character, function (charItem) {
+                    //    console.log(charItem);
+                    //    //Die akutell angemeldeten User
+                    //    eventNew.character[charItem].people_in = 0;
+                    //    eventNew.character[charItem].teilnehmer = "";
+                    //});
 
 
-                //    console.log(eventNew);
-                //    $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
+                    console.log(eventNew);
+                    $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
 
-                //    $('#calendar').fullCalendar('unselect');
-                //    //Close the Window and reset the create form
-                //    $("#createEvent").css("display", "none");
+                    $('#calendar').fullCalendar('unselect');
+                    //Close the Window and reset the create form
+                    $("#createEvent").css("display", "none");
 
-            //});
+                });
                 $scope.event = {};
             }
         };

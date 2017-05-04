@@ -58,7 +58,10 @@ namespace RaidCalenderWithIdentity.Models
         }
         public DbSet<Klasse2User> Klasse2User { get; set; }
         public DbSet<EventModel> EventModel { get; set; }
+        public DbSet<EventartModel> EventartModel { get; set; }
+        public DbSet<KlasseModel> KlasseModel { get; set; }
         public DbSet<Klasse2EventModel> Klasse2EventModel { get; set; }
+        public DbSet<RaidModel> RaidModel { get; set; }
         //public DbSet<Klasse> Klassen { get; set; }
         //protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         //{

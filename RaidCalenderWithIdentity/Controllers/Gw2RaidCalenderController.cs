@@ -82,72 +82,93 @@ namespace RaidCalenderWithIdentity.Controllers
                 
             }
         }
+
         #endregion
-        public JsonResult GetAllRaids()
-        {
-            var sql = _db.Database.SqlQuery<RaidModel>("Select * from dbo.Raid");
-            return Json(sql, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult GetAllEventart()
-        {
-            var sql = _db.Database.SqlQuery<EventartModel>("Select * from dbo.Eventart");
-            return Json(sql, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult GetAllClassesWithTyp()
-        {
-            var list = _db.Database.SqlQuery<ViewKlassenModel>("Select * from dbo.V_Klassen");
-            
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-        public string SaveEvent(EventModel model, string klassenModel)
-        {
-            //var eventModel = new EventModel
-            //{
-            //    Bezeichnung = model.
-            //};
-            //var eventModel = new EventModel { model };
-            
-            if (model.Event_Id == 0)
+        #region Event
+            #region CreateEvent
+            public JsonResult GetAllRaids()
             {
-                _db.Entry(model).State = EntityState.Added;
-
+                var sql = _db.Database.SqlQuery<RaidModel>("Select * from dbo.Raid");
+                return Json(sql, JsonRequestBehavior.AllowGet);
             }
-            else
+            public JsonResult GetAllEventart()
             {
-                _db.Entry(model).State = EntityState.Modified;
+                var sql = _db.Database.SqlQuery<EventartModel>("Select * from dbo.Eventart");
+                return Json(sql, JsonRequestBehavior.AllowGet);
             }
-            try
+            public JsonResult GetAllClassesWithTyp()
             {
-                _db.EventModel.Add(model);
-                _db.SaveChanges();
-                int newEventId = model.Event_Id;
-                var jsonKlassen = JArray.Parse(klassenModel);
-                foreach (JObject content in jsonKlassen.Children<JObject>())
+                var list = _db.Database.SqlQuery<ViewKlassenModel>("Select * from dbo.V_Klassen");
+            
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+        
+            public string SaveEvent(EventModel model, string klassenModel)
+            {
+                if (model.Event_Id == 0)
                 {
-                    int klasse_Id = (int)content.Property("Klasse_Id").Value;
-                    int maxTeilnehmer = (int)content.Property("MaxTeilnehmer").Value;
-                    var klassenmodel = new Klasse2EventModel
-                    {
-                        Klasse_Id = klasse_Id,
-                        MaxTeilnehmer = maxTeilnehmer,
-                        Event_Id = newEventId
-                    };
-                    _db.Klasse2EventModel.Add(klassenmodel);
-                    _db.SaveChanges();
-                }
-                //var modetestl = new Klasse2EventModel
-                //{
-                //    Klasse_Id = klassenModel.Klasse_Id,
-                //    MaxTeilnehmer = klassenModel.MaxTeilnehmer
-                //};
-                return "Neues Event wurde gespeichert";
+                    _db.Entry(model).State = EntityState.Added;
 
-                //int newId = klasse2User.Klasse2User_Id;
+                }
+                else
+                {
+                    _db.Entry(model).State = EntityState.Modified;
+                }
+                try
+                {
+                    _db.EventModel.Add(model);
+                    _db.SaveChanges();
+                    int newEventId = model.Event_Id;
+                    var jsonKlassen = JArray.Parse(klassenModel);
+                    foreach (JObject content in jsonKlassen.Children<JObject>())
+                    {
+                        int klasse_Id = (int)content.Property("Klasse_Id").Value;
+                        int maxTeilnehmer = (int)content.Property("MaxTeilnehmer").Value;
+                        var klassenmodel = new Klasse2EventModel
+                        {
+                            Klasse_Id = klasse_Id,
+                            MaxTeilnehmer = maxTeilnehmer,
+                            Event_Id = newEventId
+                        };
+                        _db.Klasse2EventModel.Add(klassenmodel);
+                        _db.SaveChanges();
+                    }
+                    return "Neues Event wurde gespeichert";
+                }
+                catch (Exception ex)
+                {
+                    return "ErrorMessage: " + ex;
+                }
             }
-            catch (Exception ex)
+            #endregion
+            #region DetailEvent
+            public JsonResult GetAllEvents()
             {
-                return "ErrorMessage: " + ex;
+            var list = (from a in _db.EventModel
+                        join b in _db.EventartModel on a.Eventart_Id equals b.Eventart_Id
+                        select new
+                        {
+                            eventart = b.Bezeichnung,
+                            title = a.Bezeichnung,
+                            image = _db.RaidModel.Where(x => x.Raid_Id == a.Raid_Id).FirstOrDefault().Image,
+                           start = a.startTag,
+                           end = a.endeTag,
+                           von = a.startUhrzeit,
+                           bis = a.endeUhrzeit,
+                           character = (from c in _db.KlasseModel
+                                        join d in _db.Klasse2EventModel on a.Event_Id equals d.Event_Id
+                                        where d.Klasse_Id == c.Klasse_Id
+                                        select new
+                                        {
+                                            id = c.Klasse_Id,
+                                            name = c.Bezeichnung,
+                                            image = c.Avatarlink,
+                                            maxTeilnehmer = d.MaxTeilnehmer
+                                        })
+                       }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
             }
-        }
+            #endregion
+        #endregion
     }
 }

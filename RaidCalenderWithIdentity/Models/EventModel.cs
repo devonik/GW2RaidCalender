@@ -13,6 +13,7 @@ namespace RaidCalenderWithIdentity.Models
         [Key]
         public int Event_Id { get; set; }
 
+        public int? Raid_Id { get; set; }
         public int Eventart_Id { get; set; }
 
         public string Bezeichnung { get; set; }
