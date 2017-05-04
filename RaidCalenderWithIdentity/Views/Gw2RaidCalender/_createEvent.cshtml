@@ -3,7 +3,7 @@
 }
 <link href="~/Scripts/custom/createWindow.css" rel="stylesheet" />
 @*<span class="fielderror"><i class="fa_icon icon-minus-sign"></i>numeric input required</span><span class="datatype"><i class="fa_icon icon-info-sign"></i>numeric (number of seconds)</span> <span class="charcount"><i class="fa_icon icon-info-sign"></i>min. 0 - max. 180</span>*@
-<div id="createEvent" ng-app="event" class="modal" ng-controller="AddEventController as eventCtrl">
+<div id="createEvent" ng-app="addEvent" class="modal" ng-controller="AddEventController as eventCtrl">
     <!-- Modal content -->
     <div class="modal-content">
 
@@ -16,27 +16,21 @@
                 <fieldset class="form-group">
                     <div class="col-md-3">
                         <label>Wähle einen Typ</label>
-                        <select class="form-control" ng-model="event.typ" required>
-                            <option value="raid">Raid</option>
-                            <option value="frac">Fraktale</option>
-                            <option value="sonst">Sonstiges</option>
+                        
+                        <select class="form-control" ng-model="event.typ" ng-options="item.Bezeichnung for item in eventart track by item.Eventart_Id" required>
                         </select>
                     </div>
-                    <div class="col-md-2" ng-show="event.typ=='raid'">
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Raid'">
                         <label>Bezeichnung:</label>
-                        <select class='form-control' ng-model='event.title'>
-                            <option value='geistertal'>Wing 1 - Geistertal</option>
-                            <option value='erlösungspass'>Wing 2 - Erlösungspass</option>
-                            <option value='festung'>Wing 3 - Festung der Treuen</option>
-                            <option value='bastion'>Wing 4 - Bastion der Bußfertigen</option>
+                        <select ng-model="event.title" ng-options="item.Bezeichnung for item in raids track by item.Bezeichnung" class='form-control'>
                         </select>
                     </div>
-                    <div class="col-md-2" ng-show="event.typ=='frac'">
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Fraktale'">
                         <label>Bezeichnung:</label>
                         <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
                         @*<p ng-show="event.title.$invalid" class="help-block">Bezeichung ist ein Pflichfeld</p>*@
                     </div>
-                    <div class="col-md-2" ng-show="event.typ=='sonst'">
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Sonstiges'">
                         <label>Bezeichnung:</label>
                         <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
                     </div>
@@ -52,15 +46,41 @@
                 <fieldset class="form-group">
                     <div class="table-responsive">
                         <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Basic</th>
-                                    <th>Bersi DPS</th>
-                                    <th>Condi DPS</th>
-                                </tr>
-                            </thead>
+                            {{event}}
                             <tbody>
+                                <tr ng-repeat="item in classes track by $index">
+                                        <td>
+                                            <label>{{item.Bezeichnung}}</label>
+                                            <input ng-model="event.class[item.Klasse_Id].MaxTeilnehmer" type="number" class="form-control bfh-number" min="0" max="10" value="0" />
+                                        </td>
+                                </tr>
+                                <!--@* Basics *@
                                 <tr>
+                                    <th>Basics</th>
+                                    <td ng-repeat="item in basics">
+                                        <label>{{item.Bezeichnung}}</label>
+                                        <input type="number" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>
+                                @* Bersis *@
+                                <tr>
+                                    <th>Bersis</th>
+                                    <td ng-repeat="item in bersis">
+                                        <label>{{item.Bezeichnung}}</label>
+                                        <input type="number" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>
+                                @* Condis *@
+                                <tr >
+                                    <th>Condis</th>
+                                    <td ng-repeat="item in condis">
+                                        <label>{{item.Bezeichnung}}</label>
+                                        <input type="number" class="form-control bfh-number" min="0" max="10" value="0" />
+                                    </td>
+                                </tr>-->
+
+                                <!--<tr>
+
                                     @* Basic *@
                                     <td>
                                         <label>Chrono</label>
@@ -134,61 +154,10 @@
                                     @* Platzhalter *@
                                     <td></td>
                                     <td></td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                     </div>
-                    @*<label>character</label>
-                        <ul>
-                            <li>
-                                <label style="width:80px;">Chrono</label>
-                                <input type="number" ng-model="event.character.chrono.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Druid</label>
-                                <input type="number" ng-model="event.character.druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">C-Druid</label>
-                                <input type="number" ng-model="event.character.condi_druid.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">PS</label>
-                                <input type="number" ng-model="event.character.warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Rev</label>
-                                <input type="number" ng-model="event.character.revenant.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Tempest</label>
-                                <input type="number" ng-model="event.character.tempest.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Dieb</label>
-                                <input type="number" ng-model="event.character.thief.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Guard</label>
-                                <input type="number" ng-model="event.character.guard.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Ingi</label>
-                                <input type="number" ng-model="event.character.ingeneur.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">Necro</label>
-                                <input type="number" ng-model="event.character.necro.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">C-PS</label>
-                                <input type="number" ng-model="event.character.condi_warrior.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                            <li>
-                                <label style="width:80px;">C-Ranger</label>
-                                <input type="number" ng-model="event.character.condi_ranger.count" style="width:auto;display:inline;" class="form-control bfh-number" min="0" max="10" value="0" />
-                            </li>
-                        </ul>*@
                     @* Geht nicht *@
                     <p ng-show="{{sum(event.character.condi_ranger.count+event.character.druid.count+event.character.condi_druid.count
                                 +event.character.warrior.count+event.character.revenant.count+event.character.tempest.count
@@ -210,67 +179,127 @@
 
 </div>
 <script>
-    //(function ($) {
-    //    $.fn.spinner = function () {
-    //        this.each(function () {
-    //            var el = $(this);
 
-    //            // add elements
-    //            el.wrap('<span class="spinner"></span>');
-    //            el.before('<span class="sub">-</span>');
-    //            el.after('<span class="add">+</span>');
-
-    //            // substract
-    //            el.parent().on('click', '.sub', function () {
-    //                if (el.val() > parseInt(el.attr('min')))
-    //                    el.val(function (i, oldval) {
-    //                        console.log(oldval);
-    //                            return --oldval;
-    //                    });
-    //            });
-
-    //            // increment
-    //            el.parent().on('click', '.add', function () {
-    //                if (el.val() < parseInt(el.attr('max')))
-
-    //                    el.val(function (i, oldval) {
-    //                        console.log(oldval);
-    //                        return ++oldval;
-    //                    });
-    //            });
-    //        });
-    //    };
-    //})(jQuery);
-
-    //$('input[type=number]').spinner();
-
-    var eventApp = angular.module('event', []);
-    eventApp.controller('AddEventController', ['$scope', function ($scope) {
+    var eventApp = angular.module('addEvent', []);
+    eventApp.controller('AddEventController', ['$scope', '$http', function ($scope, $http) {
         console.log("im AddEventController controller");
-        $scope.update = function (event) {
-            if ($scope.eventForm.$valid) {
-                $('#calendar').fullCalendar('addEventSource', function () {
-                    console.log(" addEventSource calender in angular");
-                    //Merged das event object aus der form
-                    //und die parameter start und end aus dem calender
-
-                    var eventNew = $.extend(true, this.settings, event, { start: event_start, end: event_ende });
-                    $.each(eventNew.character, function (charItem) {
-                        console.log(charItem);
-                        //Die akutell angemeldeten User
-                        eventNew.character[charItem].people_in = 0;
-                        eventNew.character[charItem].teilnehmer = "";
-                    });
-
-
-                    console.log(eventNew);
-                    $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
-
-                    $('#calendar').fullCalendar('unselect');
-                    ////Close the Window and reset the create form
-                    $("#createEvent").css("display", "none");
-
+        $http({
+            method: 'GET',
+            url: '@Url.Content("~/Gw2RaidCalender/GetAllRaids")'
+        }).then(function successCallback(result) {
+            $scope.raids = result.data;
+        }, function errorCallback(result) {
+        });
+        $http({
+            method: 'GET',
+            url: '@Url.Content("~/Gw2RaidCalender/GetAllEventart")'
+        }).then(function successCallback(result) {
+            $scope.eventart = result.data;
+        }, function errorCallback(result) {
+        });
+        $http({
+            method: 'GET',
+            url: '@Url.Content("~/Gw2RaidCalender/GetAllClassesWithTyp")'
+        }).then(function successCallback(result) {
+            console.log(result.data);
+            var bersis = [];
+            var basics = [];
+            var condis = [];
+            $.each(result.data, function (index, value) {
+                if(value.Klassenart === "Basic")
+                {
+                    basics.push(value);
+                }
+                else if (value.Klassenart === "Condi") {
+                    condis.push(value);
+                }
+                else if (value.Klassenart === "Bersi") {
+                    bersis.push(value);
+                }
             });
+            console.log("condis:");
+            console.log(condis);
+            $scope.condis = condis;
+            console.log("basics:");
+            console.log(basics);
+            $scope.basics = basics;
+            console.log("bersis:");
+            console.log(bersis);
+            $scope.bersis = bersis;
+            $scope.classes = result.data;
+            //console.log($scope.classes[1].Klasse_Id);
+            
+        }, function errorCallback(result) {
+        });
+        
+        
+        $scope.addClass = function () {
+
+        }
+        $scope.update = function (event) {
+            //$scope.event.class.push($scope.classes[1].Klasse_Id);
+            //console.log(event.class);
+            if ($scope.eventForm.$valid) {
+                if (event.typ.Bezeichnung == 'Raid') {
+                    event.title = event.title.Bezeichnung
+                }
+                var saveEventObject = { Eventart_Id: event.typ.Eventart_Id, Bezeichnung: event.title, startTag: event_start._i, endeTag: event_ende._i, startUhrzeit: event.von, endeUhrzeit: event.bis };
+                //var klassenModel = { event.class };
+                //$.each($scope.classes, function (key, value) {
+                //    console.log(value);
+                //    console.log(event.class)
+                //    if (value.Bezeichnung == event.class) {
+
+                //    }
+                //});
+                var newJson = [];
+                //Zusammensetzen des benötigten Json zum speichern der Klassen infos
+                $.each(event.class, function (key, value) {
+                    console.log(key);
+                    console.log(value);
+
+                    newJson.push({ Klasse_Id: parseInt(key), MaxTeilnehmer: value.MaxTeilnehmer });
+                });
+                console.log("new json:");
+                console.log(newJson);
+                console.log(saveEventObject);
+                console.log("stringified json:");
+                console.log(JSON.stringify(newJson));
+                $http.post('@Url.Content("~/Gw2RaidCalender/SaveEvent")', {
+                    model: saveEventObject,
+                    klassenModel: JSON.stringify(newJson)
+                }).then(function successCallback(result) {
+                    console.log(result.data);
+                }),
+                    function errorCallback(result) {
+                        console.log(result.data);
+                    };
+                //$('#calendar').fullCalendar('addEventSource', function () {
+                //    console.log(" addEventSource calender in angular");
+                //    if (event.typ.Bezeichnung == 'Raid') {
+                //        event.title = event.title.Bezeichnung
+                //    }
+                //    //Merged das event object aus der form
+                //    //und die parameter start und end aus dem calender
+                //    var eventNew = $.extend(true, this.settings, event, { start: event_start, end: event_ende });
+                //    console.log(event_start);
+                //    console.log(event_ende);
+                //    $.each(eventNew.character, function (charItem) {
+                //        console.log(charItem);
+                //        //Die akutell angemeldeten User
+                //        eventNew.character[charItem].people_in = 0;
+                //        eventNew.character[charItem].teilnehmer = "";
+                //    });
+
+
+                //    console.log(eventNew);
+                //    $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
+
+                //    $('#calendar').fullCalendar('unselect');
+                //    //Close the Window and reset the create form
+                //    $("#createEvent").css("display", "none");
+
+            //});
                 $scope.event = {};
             }
         };

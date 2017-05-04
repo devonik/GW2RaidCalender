@@ -41,35 +41,124 @@
     @* Timepicker *@
     <script src="~/Scripts/timepickerByjonthornton/jquery.timepicker.min.js"></script>
     <link href="~/Scripts/timepickerByjonthornton/jquery.timepicker.css" rel="stylesheet" />
-</head>
-<body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Raid Calender", "Index", "Gw2RaidCalender", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    <li>@Html.ActionLink("HoT Event Timer", "Index", "EventTimer")</li>
+    <link rel="stylesheet" href="https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia.css" />
+    <link rel="stylesheet" href="https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia-italic.css" />
+    <link href="~/Scripts/custom/menu.css" rel="stylesheet" />
+    <style>
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+    #loadingIcon{
+        margin-top:10em;
+        height:50%;
+    }
+    #overlayIcon{
+        visibility: hidden;
+        opacity:0;
+        background:rgba(255,255,255,.8) 50% 50% no-repeat;
+        position:fixed;
+        width:100%;
+        height:100%;
+        left:0;
+        top:0px;
+        z-index:9999;
+        text-align:center;
+        transition: visibility 1s, opacity 1s;
+    }
+    .loaded{
+        visibility:visible !important;
+        opacity:1 !important;
+    }
+    svg{
+  width: 100px;
+  height: 100px;  
+  }
+    /*GW2 Schrift*/
+    body,html{
+        font-family:Menomonia !important;
+        width:100%;
+        /*min-height wichtig damit sich die höhe beim scrollen mit erhöht*/
+        min-height:100%;
+    }
+    </style>
+    
+</head>
+<body class="bg-img">
+        <nav class="main-menu">
+
+            <div class="settings"></div>
+            <div class="scrollbar" id="style-1">
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Gw2RaidCalender")">
+                            <i class="fa fa-calendar fa-lg"></i>
+                            <span class="nav-text">Raid Calender</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Index", "EventTimer")">
+                            <i class="fa fa-clock-o fa-lg"></i>
+                            <span class="nav-text">HoT - Event Timer</span>
+                        </a>
+                    </li>
+                        @Html.Partial("_LoginPartial")
                 </ul>
-                @Html.Partial("_LoginPartial")
             </div>
+        </nav>
+        @*<div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Raid Calender", "Index", "Gw2RaidCalender", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li></li>
+                            <li>@Html.ActionLink("HoT Event Timer", "Index", "EventTimer")</li>
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>*@
+        <div class="container body-content">
+            <div id="overlayIcon">
+                <img src="~/img/svg/loader.svg" id="loadingIcon" />
+            </div>
+            <script>
+                var pageState = document.readyState;
+                console.log(pageState);
+                if (pageState === "loading") {
+                    console.log("Page is loading")
+                    $("#overlayIcon").addClass("loaded");
+                }
+            </script>
+            <main style="background:rgba(255,255,255,.8) 50% 50% no-repeat;padding:20px;margin-left:50px;">
+                @RenderBody()
+            </main>
+            
+            <footer style="margin-bottom:0;text-align:center;">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Guild Wars 2 Web Apps</p>
+            </footer>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Meine Guild Wars 2 Web Apps</p>
-        </footer>
-    </div>
-    @RenderSection("scripts", required: false)
+    
+
+                                    @RenderSection("scripts", required: false)
+
 </body>
 </html>

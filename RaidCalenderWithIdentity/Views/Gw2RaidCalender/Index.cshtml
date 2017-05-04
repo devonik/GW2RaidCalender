@@ -21,8 +21,9 @@
         padding: 50px 10px 0 0;
     }
 </style>
-<h1 id="test"></h1>
+
 <div id='calendar'></div>
+
 @Html.Partial("_detailEvent")
 @Html.Partial("_createEvent")
 <script>
@@ -71,60 +72,60 @@
             //Detail View
 			eventClick: function (calEvent, jsEvent, view) {
                 //Setzt das click event zurück, prevented den fall, dass das click event öfter initialisiert wird
-			    $("#btn_anmelden").unbind("click");
-			    $("#typ").text(calEvent.typ);
-			    $("#name").text(calEvent.title);
-			    $("#von").text(calEvent.von);
-			    $("#bis").text(calEvent.bis);
-			    if (!(typeof calEvent.title === "undefined")) {
-			        $("#detail_raidImg").html("<img src='/gw2RaidCalender/img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
-			    }
-			    $("#detail_table_body").html("");
-			    if (!(typeof calEvent.character === "undefined")) {
-			        $.each(calEvent.character, function (char, value) {
-			            //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
-			            $("#detail_table_body").append("<tr>" +
-                                                            "<td>"+
-                                                                "<img src='/gw2RaidCalender/img/klassen/" + char + ".png'/>" +
-                                                                char + " : <span title='Maximal'>" + value.count + "</span>" +
-                                                            "</td>" +
-                                                            "<td>" +
-                                                                "<span id='" + char + "Count' title='[n] von maximal [n] plätzen belegt'>(" + value.people_in + "/" + value.count + ")</span>" +
-                                                                "<div class='teilnehmer-dropdown'>" +
-                                                                    "<button class='dropbtn'>Teilnehmer</button>" +
-                                                                    "<div id='" + char + "Dropdown' class='teilnehmer-dropdown-content'>" +
-                                                                        "<p>" + value.teilnehmer + "</p>" +
-                                                                    "</div>" +
-                                                                "</div>" +
-                                                            "<td>" +
-                                                                //"<input type='radio' name='anmelden' value='" + char + "'/>" +
-                                                                "<button type='button' name='"+char+"' class='btn_anmelden' title='Anmelden'>Anmelden</button>" +
-                                                            "</td>"+
-                                                       "</tr>");
+			    //$("#btn_anmelden").unbind("click");
+			    //$("#typ").text(calEvent.typ);
+			    //$("#name").text(calEvent.title);
+			    //$("#von").text(calEvent.von);
+			    //$("#bis").text(calEvent.bis);
+			    //if (!(typeof calEvent.title === "undefined")) {
+			    //    $("#detail_raidImg").html("<img src='/img/orte/" + calEvent.title.toLowerCase() + ".png' alt='Kein Bild'/>");
+			    //}
+			    //$("#detail_table_body").html("");
+			    //if (!(typeof calEvent.character === "undefined")) {
+			    //    $.each(calEvent.character, function (char, value) {
+			    //        //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
+			    //        $("#detail_table_body").append("<tr>" +
+                //                                            "<td>"+
+                //                                                "<img src='/img/klassen/" + char + ".png'/>" +
+                //                                                char + " : <span title='Maximal'>" + value.count + "</span>" +
+                //                                            "</td>" +
+                //                                            "<td>" +
+                //                                                "<span id='" + char + "Count' title='[n] von maximal [n] plätzen belegt'>(" + value.people_in + "/" + value.count + ")</span>" +
+                //                                                "<div class='teilnehmer-dropdown'>" +
+                //                                                    "<button class='dropbtn'>Teilnehmer</button>" +
+                //                                                    "<div id='" + char + "Dropdown' class='teilnehmer-dropdown-content'>" +
+                //                                                        "<p>" + value.teilnehmer + "</p>" +
+                //                                                    "</div>" +
+                //                                                "</div>" +
+                //                                            "<td>" +
+                //                                                //"<input type='radio' name='anmelden' value='" + char + "'/>" +
+                //                                                "<button type='button' name='"+char+"' class='btn_anmelden' title='Anmelden'>Anmelden</button>" +
+                //                                            "</td>"+
+                //                                       "</tr>");
 
-			        });
-			        $("#btn_anmelden").css("display", "");
-			        $(".btn_anmelden").click(function () {
-                        //Sieht nach welcher Character geupdatet werden soll anhand der radio
-			            var this_char = $(this).attr("name");
-			            //Es dürfen sich nicht mehr als die maximale Anzahl anmelden
-			            if ((calEvent.character[this_char].people_in + 1) <= (calEvent.character[this_char].count)) {
-			                //Added die Einladung zu dem Objekt
-			                calEvent.character[this_char].people_in = calEvent.character[this_char].people_in + 1;
-                            //Später der currentUser
-			                calEvent.character[this_char].teilnehmer = "Killingspree.1370";
-			                //Updatet die Zahl auf der Oberfläche //// vllt kann man hier angular verwenden ????
-			                $("#" + this_char + "Count").text("(" + calEvent.character[this_char].people_in + "/" + calEvent.character[this_char].count + ")");
-                            //Fügt den Username des aktuellen Users der GUI hinzu
-			                $("#" + this_char + "Dropdown").append("<p>" + "Killingspree.1370" + "</p>");
-			                //Updatet das Event im calender
-			                $('#calendar').fullCalendar('updateEvent', calEvent);
-			            }
-			            else {
-			                alert("Es können nur max." + calEvent.character[this_char].count + "x " + this_char + " teilnehmen");
-			            }
-			        });
-			    }
+			    //    });
+			        //$("#btn_anmelden").css("display", "");
+			        //$(".btn_anmelden").click(function () {
+                    //    //Sieht nach welcher Character geupdatet werden soll anhand der radio
+			        //    var this_char = $(this).attr("name");
+			        //    //Es dürfen sich nicht mehr als die maximale Anzahl anmelden
+			        //    if ((calEvent.character[this_char].people_in + 1) <= (calEvent.character[this_char].count)) {
+			        //        //Added die Einladung zu dem Objekt
+			        //        calEvent.character[this_char].people_in = calEvent.character[this_char].people_in + 1;
+                    //        //Später der currentUser
+			        //        calEvent.character[this_char].teilnehmer = "Killingspree.1370";
+			        //        //Updatet die Zahl auf der Oberfläche //// vllt kann man hier angular verwenden ????
+			        //        $("#" + this_char + "Count").text("(" + calEvent.character[this_char].people_in + "/" + calEvent.character[this_char].count + ")");
+                    //        //Fügt den Username des aktuellen Users der GUI hinzu
+			        //        $("#" + this_char + "Dropdown").append("<p>" + "Killingspree.1370" + "</p>");
+			        //        //Updatet das Event im calender
+			        //        $('#calendar').fullCalendar('updateEvent', calEvent);
+			        //    }
+			        //    else {
+			        //        alert("Es können nur max." + calEvent.character[this_char].count + "x " + this_char + " teilnehmen");
+			        //    }
+			        //});
+			    //}
 			    $("#detailEvent").css("display", "block");
 
 			    //console.log('Event: ' + calEvent.title);

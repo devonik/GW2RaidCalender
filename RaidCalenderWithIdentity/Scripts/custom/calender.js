@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
-    
+    console.log("page is ready now");
+    //Entfernt das loading icon, soblad die Seite ready ist
+    $("#overlayIcon").removeClass("loaded");
+    //var pagestate = document.readyState;
     //var eventApp = angular.module('event', []);
     //eventApp.controller('EventController', ['$scope', function ($scope) {
     //    $scope.master = {};
@@ -15,6 +18,12 @@
 
     //    $scope.reset();
     //}]);
+    //if (pagestate === "loading") {
+    //    console.log("Die Seite lädt...");
+    //    $("#loadingIcon").css("visibility","visible");
+    //    $("#loadingIcon").css("opacity", "1");
+    //}
+    
     //http://jonthornton.github.io/jquery-timepicker/
     $('.timepicker').timepicker({
         //Set the scroll position to local time if no value selected.

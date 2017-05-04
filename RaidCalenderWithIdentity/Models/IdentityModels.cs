@@ -52,9 +52,13 @@ namespace RaidCalenderWithIdentity.Models
         
         public ApplicationDbContext()
             : base("DefaultConnection")
+        //Gw2AppConnectionMssql
+        //DefaultConnection
         {
         }
         public DbSet<Klasse2User> Klasse2User { get; set; }
+        public DbSet<EventModel> EventModel { get; set; }
+        public DbSet<Klasse2EventModel> Klasse2EventModel { get; set; }
         //public DbSet<Klasse> Klassen { get; set; }
         //protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         //{

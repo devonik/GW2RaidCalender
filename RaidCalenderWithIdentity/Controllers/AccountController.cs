@@ -406,7 +406,7 @@ namespace RaidCalenderWithIdentity.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
+            { 
                 if (_userManager != null)
                 {
                     _userManager.Dispose();
