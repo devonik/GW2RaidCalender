@@ -25,13 +25,21 @@
         display:none;
     }
 </style>
+<div ng-app="Event" ng-controller="DetailEventController as detail">
+    <div ui-calendar="uiConfig.calendar" id="calendar"></div> 
+    @Html.Partial("_detailEvent")
+    @Html.Partial("_createEvent")
+</div>
+    <script src="~/Scripts/custom/calender.js"></script>
+    <script>
 
-<div id='calendar'></div>
+        calender.Init();
+    </script>
 
-@Html.Partial("_detailEvent")
-@Html.Partial("_createEvent")
 <script>
-    var currentUsername = '@(User.Identity.GetUserName())';
+    
+    //console.log(eventApp);
+    @*var currentUsername = '@(User.Identity.GetUserName())';
     //var eventApp = angular.module('event', []);
     //$(document).ready(function () {
     var event_ende;
@@ -75,72 +83,80 @@
             //Set global variables to use the times in form save
             event_start = start;
             event_ende = end;
-        },
+        },*@
         //Detail View
-        eventClick: function (calEvent, jsEvent, view) {
-            console.log(calEvent);
-            //Setzt das click event zurück, prevented den fall, dass das click event öfter initialisiert wird
-            $("#btn_anmelden").unbind("click");
-            $("#typ").text(calEvent.eventart);
-            $("#name").text(calEvent.title);
-            $("#von").text(calEvent.von);
-            $("#bis").text(calEvent.bis);
-            $("#detail_raidImg").html("<img src='/img/orte/" + calEvent.image + "' alt='Kein Bild'/>");
-            $("#detail_table_body").html("");
-            if (!(typeof calEvent.character === "undefined")) {
-                $.each(calEvent.character, function (key, value) {
-                    //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
-                    $("#detail_table_body").append("<tr>" +
-                                                        "<td>"+
-                                                            "<img src='/img/klassen/" + value.image + "'/>" +
-                                                            value.name + " : <span title='Maximal'>" + value.maxTeilnehmer + "</span>" +
-                                                        "</td>" +
-                                                        "<td>" +
-                                                            "<span id='" + value.name + "Count' title='[n] von maximal [n] plätzen belegt'>(Platzhalten/" + value.maxTeilnehmer + ")</span>" +
-                                                            "<div class='teilnehmer-dropdown'>" +
-                                                                "<button class='dropbtn'>Teilnehmer</button>" +
-                                                                "<div id='" + value.name + "Dropdown' class='teilnehmer-dropdown-content'>" +
-                                                                    "<p>platzhalterTeilnehmer</p>" +
-                                                                "</div>" +
-                                                            "</div>" +
-                                                        "<td>" +
-                                                            //"<input type='radio' name='anmelden' value='" + char + "'/>" +
-                                                            "<button type='button' name='" + value.name + "' class='btn_anmelden' title='Anmelden'>Anmelden</button>" +
-                                                        "</td>"+
-                                                   "</tr>");
+        //eventClick: function (calEvent, jsEvent, view) {
 
-                });
-            $("#btn_anmelden").css("display", "");
-            //$(".btn_anmelden").click(function () {
-            //    //Sieht nach welcher Character geupdatet werden soll anhand der radio
-            //    var this_char = $(this).attr("name");
-            //    //Es dürfen sich nicht mehr als die maximale Anzahl anmelden
-            //    if ((calEvent.character[this_char].people_in + 1) <= (calEvent.character[this_char].count)) {
-            //        //Added die Einladung zu dem Objekt
-            //        calEvent.character[this_char].people_in = calEvent.character[this_char].people_in + 1;
-            //        //Später der currentUser
-            //        calEvent.character[this_char].teilnehmer = "Killingspree.1370";
-            //        //Updatet die Zahl auf der Oberfläche //// vllt kann man hier angular verwenden ????
-            //        $("#" + this_char + "Count").text("(" + calEvent.character[this_char].people_in + "/" + calEvent.character[this_char].count + ")");
-            //        //Fügt den Username des aktuellen Users der GUI hinzu
-            //        $("#" + this_char + "Dropdown").append("<p>" + "Killingspree.1370" + "</p>");
-            //        //Updatet das Event im calender
-            //        $('#calendar').fullCalendar('updateEvent', calEvent);
-            //    }
-            //    else {
-            //        alert("Es können nur max." + calEvent.character[this_char].count + "x " + this_char + " teilnehmen");
-            //    }
-            //});
-            }
-            $("#detailEvent").css("display", "block");
+        //    eventApp.controller('DetailEventController', ['$scope', '$http', function ($scope, $http) {
+        //    console.log("HAAAAAALLLLO");
+        //    console.log(calEvent);
 
-            //console.log('Event: ' + calEvent.title);
-            //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-            //console.log('View: ' + view.name);
+        //    $scope.eventDetails = calEvent;
+        //    console.log("$scope.eventDetails");
+        //    console.log($scope.eventDetails);
+        //    }]);
+        //    //Setzt das click event zurück, prevented den fall, dass das click event öfter initialisiert wird
+        //    $("#btn_anmelden").unbind("click");
+        //    $("#typ").text(calEvent.eventart);
+        //    $("#name").text(calEvent.title);
+        //    $("#von").text(calEvent.von);
+        //    $("#bis").text(calEvent.bis);
+        //    $("#detail_raidImg").html("<img src='/img/orte/" + calEvent.image + "' alt='Kein Bild'/>");
+        //    $("#detail_table_body").html("");
+        //    if (!(typeof calEvent.character === "undefined")) {
+        //        $.each(calEvent.character, function (key, value) {
+        //            //Fügt die Charaktere der View hinzu, je nachdem wieviele im Event gespeichert wurden
+        //            $("#detail_table_body").append("<tr>" +
+        //                                                "<td>"+
+        //                                                    "<img src='/img/klassen/" + value.image + "'/>" +
+        //                                                    value.name + " : <span title='Maximal'>" + value.maxTeilnehmer + "</span>" +
+        //                                                "</td>" +
+        //                                                "<td>" +
+        //                                                    "<span id='" + value.name + "Count' title='[n] von maximal [n] plätzen belegt'>(Platzhalten/" + value.maxTeilnehmer + ")</span>" +
+        //                                                    "<div class='teilnehmer-dropdown'>" +
+        //                                                        "<button class='dropbtn'>Teilnehmer</button>" +
+        //                                                        "<div id='" + value.name + "Dropdown' class='teilnehmer-dropdown-content'>" +
+        //                                                            "<p>platzhalterTeilnehmer</p>" +
+        //                                                        "</div>" +
+        //                                                    "</div>" +
+        //                                                "<td>" +
+        //                                                    //"<input type='radio' name='anmelden' value='" + char + "'/>" +
+        //                                                    "<button type='button' name='" + value.name + "' class='btn_anmelden' title='Anmelden'>Anmelden</button>" +
+        //                                                "</td>"+
+        //                                           "</tr>");
+
+        //        });
+        //    $("#btn_anmelden").css("display", "");
+        //    //$(".btn_anmelden").click(function () {
+        //    //    //Sieht nach welcher Character geupdatet werden soll anhand der radio
+        //    //    var this_char = $(this).attr("name");
+        //    //    //Es dürfen sich nicht mehr als die maximale Anzahl anmelden
+        //    //    if ((calEvent.character[this_char].people_in + 1) <= (calEvent.character[this_char].count)) {
+        //    //        //Added die Einladung zu dem Objekt
+        //    //        calEvent.character[this_char].people_in = calEvent.character[this_char].people_in + 1;
+        //    //        //Später der currentUser
+        //    //        calEvent.character[this_char].teilnehmer = "Killingspree.1370";
+        //    //        //Updatet die Zahl auf der Oberfläche //// vllt kann man hier angular verwenden ????
+        //    //        $("#" + this_char + "Count").text("(" + calEvent.character[this_char].people_in + "/" + calEvent.character[this_char].count + ")");
+        //    //        //Fügt den Username des aktuellen Users der GUI hinzu
+        //    //        $("#" + this_char + "Dropdown").append("<p>" + "Killingspree.1370" + "</p>");
+        //    //        //Updatet das Event im calender
+        //    //        $('#calendar').fullCalendar('updateEvent', calEvent);
+        //    //    }
+        //    //    else {
+        //    //        alert("Es können nur max." + calEvent.character[this_char].count + "x " + this_char + " teilnehmen");
+        //    //    }
+        //    //});
+        //    }
+        //    $("#detailEvent").css("display", "block");
+
+        //    //console.log('Event: ' + calEvent.title);
+        //    //console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+        //    //console.log('View: ' + view.name);
 
 
-        },
-        eventRender: function (event, element) {
+        //},
+        @*eventRender: function (event, element) {
             console.log("eventReder");
             //element.qtip({
             //    content: event.description
@@ -177,7 +193,8 @@
 			if (this.value) {
 				$('#calendar').fullCalendar('option', 'locale', this.value);
 			}
-		});
+		});*@
+    
 	//});
 
 </script>

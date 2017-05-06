@@ -130,7 +130,7 @@ background:#F7F7F7;
 position:fixed;
 top:0;
 bottom:0;
-left:0;
+/*left:0;*/
 width:55px;
 overflow:hidden;
 -webkit-transition:width .2s linear;

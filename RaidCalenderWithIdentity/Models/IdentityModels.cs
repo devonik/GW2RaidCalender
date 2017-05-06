@@ -37,6 +37,7 @@ namespace RaidCalenderWithIdentity.Models
     public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole,
     CustomUserClaim>
     {
+        
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Beachten Sie, dass der "authenticationType" mit dem in "CookieAuthenticationOptions.AuthenticationType" definierten Typ übereinstimmen muss.
@@ -62,6 +63,8 @@ namespace RaidCalenderWithIdentity.Models
         public DbSet<KlasseModel> KlasseModel { get; set; }
         public DbSet<Klasse2EventModel> Klasse2EventModel { get; set; }
         public DbSet<RaidModel> RaidModel { get; set; }
+        public DbSet<User2EventModel> User2EventModel { get; set; }
+        //public DbSet<ApplicationUser> CustomUserModel { get; set; }
         //public DbSet<Klasse> Klassen { get; set; }
         //protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         //{

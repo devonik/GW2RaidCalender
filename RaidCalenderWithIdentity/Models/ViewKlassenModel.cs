@@ -12,5 +12,6 @@ namespace RaidCalenderWithIdentity.Models
         public int Klasse_Id { get; set; }
         public string Bezeichnung { get; set; }
         public string Klassenart { get; set; }
+        public string Image { get; set; }
     }
 }

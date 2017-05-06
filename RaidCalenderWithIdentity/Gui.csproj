@@ -204,6 +204,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CustomUserModel.cs" />
     <Compile Include="Models\EventartModel.cs" />
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -213,7 +214,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\RaidModel.cs" />
     <Compile Include="Models\RasseModel.cs" />
-    <Compile Include="Models\ViewEvent.cs" />
+    <Compile Include="Models\User2EventModel.cs" />
     <Compile Include="Models\ViewKlassenModel.cs" />
     <Compile Include="Models\ViewUserCharsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -254,6 +255,7 @@
     <Content Include="img\rassen\sylvari.jpg" />
     <Content Include="img\svg\loader.svg" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\AngularUICalender.js" />
     <Content Include="Scripts\bootstrap-3.3.7\bootstrap-theme.min.css" />
     <Content Include="Scripts\bootstrap-3.3.7\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap-3.3.7\bootstrap.min.js" />
@@ -262,6 +264,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\bootstrapUI-0-13-0.js" />
+    <Content Include="Scripts\custom\calender.js" />
     <Content Include="Scripts\custom\createWindow.css" />
     <Content Include="Scripts\custom\detailWindow.css" />
     <Content Include="Scripts\custom\menu.css" />
@@ -312,7 +316,7 @@
     <Content Include="Scripts\font-awesome-4.7.0\font-awesome-4.7.0\scss\_stacked.scss" />
     <Content Include="Scripts\font-awesome-4.7.0\font-awesome-4.7.0\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\custom\calender.js" />
+    <Content Include="Scripts\custom\main.js" />
     <Content Include="Scripts\fullcalender-3.3.1\CHANGELOG.txt" />
     <Content Include="Scripts\fullcalender-3.3.1\CONTRIBUTING.txt" />
     <Content Include="Scripts\fullcalender-3.3.1\demos\agenda-views.html" />

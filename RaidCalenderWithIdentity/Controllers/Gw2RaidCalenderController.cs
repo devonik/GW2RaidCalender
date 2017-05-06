@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RaidCalenderWithIdentity.Models;
@@ -14,6 +15,7 @@ namespace RaidCalenderWithIdentity.Controllers
     public class Gw2RaidCalenderController : Controller
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
+        
         // GET: Gw2RaidCalender
         public ActionResult Index()
         {
@@ -144,13 +146,15 @@ namespace RaidCalenderWithIdentity.Controllers
             #region DetailEvent
             public JsonResult GetAllEvents()
             {
+            var customUserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var list = (from a in _db.EventModel
                         join b in _db.EventartModel on a.Eventart_Id equals b.Eventart_Id
                         select new
                         {
-                            eventart = b.Bezeichnung,
-                            title = a.Bezeichnung,
-                            image = _db.RaidModel.Where(x => x.Raid_Id == a.Raid_Id).FirstOrDefault().Image,
+                           eventart = b.Bezeichnung,
+                           id = a.Event_Id,
+                           title = a.Bezeichnung,
+                           image = _db.RaidModel.Where(x => x.Raid_Id == a.Raid_Id).FirstOrDefault().Image,
                            start = a.startTag,
                            end = a.endeTag,
                            von = a.startUhrzeit,
@@ -160,14 +164,49 @@ namespace RaidCalenderWithIdentity.Controllers
                                         where d.Klasse_Id == c.Klasse_Id
                                         select new
                                         {
+                                            //TODO: Muss Klasse2Event ID sein, damit man sich anmelden kann
                                             id = c.Klasse_Id,
                                             name = c.Bezeichnung,
                                             image = c.Avatarlink,
-                                            maxTeilnehmer = d.MaxTeilnehmer
+                                            maxTeilnehmer = d.MaxTeilnehmer,
+                                            teilnehmerAnz = _db.User2EventModel.Where(y => y.Klasse2Event_Id == d.Klasse2Event_Id).Count(),
+                                            teilnehmer = (from v in _db.User2EventModel
+                                                          join u in _db.Users on v.User_Id equals u.Id
+                                                          where v.Klasse2Event_Id == d.Klasse2Event_Id
+                                                          select u.UserName)
                                         })
                        }).ToList();
+            
             return Json(list, JsonRequestBehavior.AllowGet);
             }
+        public string DeleteEvent(int eventId)
+        {
+            if (eventId > 0)
+            {
+                try
+                {
+                    //Nicht nötig, da in der Datenbank "Cascadiert gelöscht wird". D.h. wenn das event gelöscht wird werden die Referenzierten tabellen "User2Event" und "Klassen2Event" auch gelöscht.
+                    //
+                    //var user2Event = _db.User2EventModel.Where(x => x.Event_Id == eventId);
+                    //_db.User2EventModel.RemoveRange(user2Event);
+                    //var klassen2Event = _db.Klasse2EventModel.Where(x => x.Event_Id == eventId);
+                    //_db.Klasse2EventModel.RemoveRange(klassen2Event);
+                    var eventRow = _db.EventModel.Where(x => x.Event_Id == eventId).FirstOrDefault();
+                    _db.EventModel.Remove(eventRow);
+                    _db.SaveChanges();
+                    return "Das Event mit der ID: " + eventId + " wurde erfolgreich gelöscht";
+                }
+                catch(Exception ex)
+                {
+                    return "Beim Löschen des Events: " + eventId + " kam es folendem Fehler: " + ex;
+                }
+            }
+            else
+            {
+                return "Die ID ist nicht gültig";
+            }
+            
+        }
             #endregion
         #endregion
     }
