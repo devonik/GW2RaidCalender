@@ -32,8 +32,9 @@
 </div>
     <script src="~/Scripts/custom/calender.js"></script>
     <script>
-
-        calender.Init();
+        var currentUserName = '@User.Identity.GetUserName()';
+        var currentUserId = '@User.Identity.GetUserId()';
+        calender.Init('@Request.IsAuthenticated', currentUserName, currentUserId);
     </script>
 
 <script>

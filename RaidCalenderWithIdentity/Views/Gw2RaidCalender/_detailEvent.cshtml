@@ -9,7 +9,7 @@
         <div class="modal-header">
             <span class="close">&times;</span>
             <h2>Ansicht eines Events</h2>
-            <img style="margin-left:20px;margin-top:20px;" src="/img/orte/{{eventDetails.image}}" alt="Kein Bild vorhanden!" />
+            <img @*style="margin-left:20px;margin-top:20px;"*@ src="/img/orte/{{eventDetails.image}}" alt="Kein Bild vorhanden!" />
         </div>
         <div class="modal-body">
             <form>
@@ -50,6 +50,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in eventDetails.character track by $index">
+                            
                             <td>
                                 <img src='/img/klassen/{{item.image}}' />
                                 {{item.name}} : <span title='Maximal'>{{item.maxTeilnehmer}}</span>
@@ -63,7 +64,7 @@
                                    </div>
                                 </div>
                             <td>
-                                <input type='radio' name="anmelden" title='Anmelden' value="{{item.name}}"/>
+                                <input type='radio' name="anmelden" title='Anmelden' ng-model="radio.class" ng-value="item" value="{{item.name}}"/>
                             </td>
                         </tr>
                     </tbody>
@@ -71,9 +72,13 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button title="Anmelden" class="btn btn-primary pull-right" ng-click="anmelden()" ng-disabled="">Anmelden</button>
-           <button title="Löschen" class="btn btn-primary pull-right" ng-click="removeEvent(eventDetails.id)">Event Löschen</button>
+            {{isReadOnly}},{{isRegistered}}
+            <button title="Anmelden" class="btn btn-primary pull-right" ng-click="anmelden(eventDetails.id,radio.class.klasse2Event_Id)" ng-disabled="isReadOnly || isRegistered">Anmelden</button>
+           <button title="Löschen" class="btn btn-primary pull-right" ng-click="removeEvent(eventDetails.id)" ng-disabled="isReadOnly">Event Löschen</button>
         </div>
     </div>
 
 </div>
+<script>
+    
+</script>

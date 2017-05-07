@@ -165,7 +165,7 @@ namespace RaidCalenderWithIdentity.Controllers
                                         select new
                                         {
                                             //TODO: Muss Klasse2Event ID sein, damit man sich anmelden kann
-                                            id = c.Klasse_Id,
+                                            klasse2Event_Id = d.Klasse2Event_Id,
                                             name = c.Bezeichnung,
                                             image = c.Avatarlink,
                                             maxTeilnehmer = d.MaxTeilnehmer,
@@ -206,6 +206,30 @@ namespace RaidCalenderWithIdentity.Controllers
                 return "Die ID ist nicht gültig";
             }
             
+        }
+        public string UserAnmelden(int klasse2EventId, int eventId, int userId)
+        {
+            if(klasse2EventId != 0 && eventId != 0)
+            {
+                try
+                {
+                    var user2EventModel = new User2EventModel
+                    {
+                        Event_Id = eventId,
+                        User_Id = userId,
+                        Klasse2Event_Id = klasse2EventId
+
+                    };
+                    _db.User2EventModel.Add(user2EventModel);
+                    _db.SaveChanges();
+                    return "Sie haben sich erfolgreich angemeldet!";
+                }
+                catch(Exception ex)
+                {
+                    return "Bei der Anmeldung kam es zu einem Internen Fehler: " + ex;
+                }
+            }
+            return "Die Daten sind nicht gültig!";
         }
             #endregion
         #endregion

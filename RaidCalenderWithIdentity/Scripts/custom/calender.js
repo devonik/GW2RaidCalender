@@ -2,9 +2,8 @@
     var eventApp = angular.module('Event', ['ui.calendar', 'ui.bootstrap']);
     var event_ende;
     var event_start;
-    function initCalender() {
+    function initCalender(isLoggedIn, CurrenUserName, currentUserId) {
         console.log("init Calender...");
-        //var currentUsername = '@(User.Identity.GetUserName())';
         //var eventApp = angular.module('event', []);
         //$(document).ready(function () {
         
@@ -44,26 +43,27 @@
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
+            //$scope.customRule = { isReadOnly: true, isRegistered: false };
             //$scope.changeTo = 'Hungarian';
             /* event source that pulls from google.com */
             //$scope.eventSources = [{
             //    title: 'All Day Event',start: new Date(y, m, 1)
             //}];
             /* event source that contains custom events on the scope */
-            $scope.events = [
-              {
-                url: "/Gw2RaidCalender/GetAllEvents",
-                type: 'GET',
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function () {
-                    alert('there was an error while fetching events!');
-                }//,
-                //color: 'yellow',   // a non-ajax option
-                //textColor: 'black' // a non-ajax option
-            }
-            ];
+            //$scope.events = [
+            //  {
+            //    url: "/Gw2RaidCalender/GetAllEvents",
+            //    type: 'GET',
+            //    success: function (data) {
+            //        console.log(data);
+            //    },
+            //    error: function () {
+            //        alert('there was an error while fetching events!');
+            //    }//,
+            //    //color: 'yellow',   // a non-ajax option
+            //    //textColor: 'black' // a non-ajax option
+            //}
+            //];
             /* event source that calls a function on every view switch */
             //$scope.eventsF = function (start, end, timezone, callback) {
             //    var s = new Date(start).getTime() / 1000;
@@ -96,14 +96,73 @@
                         console.log(result.data);
                     };
             }
+            //$scope.test = {};
             /* alert on eventClick */
             $scope.EventClick = function (event, jsEvent, view) {
+                
+                var isRegistered;
+                var testi;
+                
+                angular.forEach(event.character, function (pvalue, pkey) {
+                    for (var item in pvalue.teilnehmer) {
+                        if (pvalue.teilnehmer[item] == CurrenUserName) {
+                            console.log("User ist bereits angemeldet!");
+                            isRegistered = true;
+                            testi = "WAHR";
+                        } else {
+                            console.log("User ist noch nicht angemeldet!");
+                            isRegistered = false;
+                            testi = "FALSCH";
+                        }
+                    }
+                });
+                $scope.isRegistered = isRegistered;
                 $scope.eventDetails = event;
+                console.log($scope.customRule);
+                //$scope.eventDetails = event;
                 $("#detailEvent").css("display", "block");
             };
+            $scope.radio = {};
+            
+            if (isLoggedIn == 'True') {
+                $scope.isReadOnly = false;
+            }
+            else {
+                $scope.isReadOnly = true;
+            }
             //Zum Event anmelden
-            $scope.anmelden = function () {
-
+            $scope.anmelden = function (eventId, klasse2EventId) {
+                console.log("EventId: " + eventId + "\nklasse2EventId: " + klasse2EventId);
+                console.log($scope.eventDetails.character);
+                $.each($scope.eventDetails.character, function (key, value) {
+                    console.log(value);
+                    if (value.klasse2Event_Id == klasse2EventId) {
+                        console.log(value);
+                        if ((value.teilnehmerAnz + 1) <= (value.maxTeilnehmer)) {
+                            //Added die Einladung zu dem Objekt
+                            $scope.eventDetails.character[key].teilnehmerAnz += 1;
+                            //Später der currentUser
+                            $scope.eventDetails.character[key].teilnehmer.push(CurrenUserName);
+                            //User gilt nun als angemeldet
+                            $scope.isRegistered = true;
+                            $http.post("/Gw2RaidCalender/UserAnmelden", {
+                                eventId: eventId,
+                                klasse2EventId: klasse2EventId,
+                                userId: currentUserId
+                            }).then(function successCallback(result) {
+                                console.log(result.data);
+                            }),
+                    function errorCallback(result) {
+                        console.log(result.data);
+                    };
+                        }
+                        else {
+                            alert("Es können nur max." + value.maxTeilnehmer + "x " + value.name + " teilnehmen");
+                            return;
+                        }
+                    }
+                });
+                
             };
             //$(".btn_anmelden").click(function () {
             //    //    //Sieht nach welcher Character geupdatet werden soll anhand der radio
@@ -294,20 +353,20 @@
                         console.log(result.data);
                     };
                     //Refresh calender events
-                    $('#calendar').fullCalendar('refetchEvents');
-                    //Close the Window and reset the create form
-                       $("#createEvent").css("display", "none");
-                    //$('#calendar').fullCalendar('addEventSource', function () {
-                    //    console.log(" addEventSource calender in angular");
-                    //    var eventNew = $.extend(true, this.settings, event, { start: event_start._d, end: event_ende._d});
-                    //    console.log(eventNew);
-                    //    $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
+                    
+                    $('#calendar').fullCalendar('addEventSource', function () {
+                        console.log(" addEventSource calender in angular");
+                        var eventNew = $.extend(true, this.settings, event, { start: event_start._d, end: event_ende._d});
+                        console.log(eventNew);
+                        $('#calendar').fullCalendar('renderEvent', eventNew, true); // stick? = true
 
-                    //    $('#calendar').fullCalendar('unselect');
-                    //    //Close the Window and reset the create form
-                    //    $("#createEvent").css("display", "none");
+                        $('#calendar').fullCalendar('unselect');
+                        //Close the Window and reset the create form
+                        $("#createEvent").css("display", "none");
 
-                    //});
+                    });
+                    //????
+                    //$('#calendar').fullCalendar('refetchEvents');
                     $scope.event = {};
                 }
             };
@@ -323,8 +382,8 @@
     function initDetailsEvent() {
 
     }
-    function init() {
-        initCalender();
+    function init(isLoggedIn, CurrenUserName, currentUserId) {
+        initCalender(isLoggedIn, CurrenUserName, currentUserId);
         initCreateEvent();
     }
     return {
