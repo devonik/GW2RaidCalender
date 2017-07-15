@@ -5,8 +5,10 @@ using System.Web;
 
 namespace RaidCalenderWithIdentity.Models
 {
-    //partial class CustomUserModel
+
+    //public class CustomUserModel
     //{
-    //    public int Id { get}
+    //    public int Id { get; set; }
+    //    public string ApiKey { get; set; }
     //}
 }

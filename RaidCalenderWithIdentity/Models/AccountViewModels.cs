@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RaidCalenderWithIdentity.Models
 {
+    
     public class ExternalLoginConfirmationViewModel
     {
         [Required]

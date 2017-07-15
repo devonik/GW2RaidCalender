@@ -56,11 +56,6 @@
                             </tbody>
                         </table>
                     </div>
-                    @* Geht nicht *@
-                    <p ng-show="{{sum(event.character.condi_ranger.count+event.character.druid.count+event.character.condi_druid.count
-                                +event.character.warrior.count+event.character.revenant.count+event.character.tempest.count
-                                +event.character.thief.count+event.character.guard.count+event.character.ingeneur.count
-                                +event.character.necro.count+event.character.condi_warrior.count+event.character.condi_ranger.count)>10}}">Es können nur 10 Leute in den Raid</p>
                 </fieldset>
                 <fieldset class="form-group">
                     <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
@@ -68,11 +63,9 @@
                 </fieldset>
             </form>
         </div>
-        @*<div class="modal-footer">
-                <p>form = {{event}}</p>
-                <p>master = {{master}}</p>
-                <h3>Modal Footer</h3>
-            </div>*@
+        <div class="modal-footer">
+            <div style="display:inline;border:1px solid red;">{{createEvent.customError}}</div>
+        </div>
     </div>
 
 </div>

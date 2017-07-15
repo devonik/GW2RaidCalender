@@ -15,7 +15,7 @@ namespace RaidCalenderWithIdentity.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        //private ApplicationDbContext _db = new ApplicationDbContext();
         public ManageController()
         {
         }
@@ -54,6 +54,7 @@ namespace RaidCalenderWithIdentity.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            var currentUser = UserManager.FindById(User.Identity.GetUserId<int>());
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Ihr Kennwort wurde geändert."
                 : message == ManageMessageId.SetPasswordSuccess ? "Ihr Kennwort wurde festgelegt."
@@ -69,7 +70,8 @@ namespace RaidCalenderWithIdentity.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId<int>()),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId<int>()),
                 Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId<int>()),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId()),
+                ApiKey = currentUser.ApiKey
             };
             return View(model);
         }

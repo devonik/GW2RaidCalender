@@ -1,10 +1,17 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    @* FAVICON *@
+    <link rel="icon" href="~/img/favicon/TEM_Member_16x16Neu.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/img/favicon/TEM_Member_16x16Neu.png" type="image/x-icon" />
+    @* TOUCH ICON für mobile *@
+    <link rel="apple-touch-icon" sizes="120x120" href="~/img/touchIcon/TEMFavicon120x119.PNG" />
+    <link rel="apple-touch-icon" sizes="152x152" href="~/img/touchIcon/TEMFavicon152x151.PNG" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raid Kalender</title>
+    <title>GW2 Webapps</title>
     <!-- Latest compiled and minified CSS -->
 
     <link href="~/Scripts/bootstrap-3.3.7/bootstrap.min.css" rel="stylesheet" />
@@ -12,13 +19,12 @@
     <!-- Optional theme -->
 
     <link href="~/Scripts/bootstrap-3.3.7/bootstrap-theme.min.css" rel="stylesheet" />
-
+    @* jquery *@
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
     <!-- Latest compiled and minified JavaScript -->
 
     <script src="~/Scripts/bootstrap-3.3.7/bootstrap.min.js"></script>
 
-    @* jquery *@
-    <script src="~/Scripts/jquery-3.2.1.js"></script>
     @* Font Awesome *@
     <link href="~/Scripts/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     @* angular *@
@@ -112,6 +118,12 @@
                         <a href="@Url.Action("Index", "EventTimer")">
                             <i class="fa fa-clock-o fa-lg"></i>
                             <span class="nav-text">HoT - Event Timer</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "RaidLogs")">
+                            <i class="fa fa-clock-o fa-lg"></i>
+                            <span class="nav-text">Raid Logs</span>
                         </a>
                     </li>
                         @Html.Partial("_LoginPartial")

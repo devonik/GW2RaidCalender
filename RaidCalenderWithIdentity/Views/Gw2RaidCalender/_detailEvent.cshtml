@@ -9,7 +9,8 @@
         <div class="modal-header">
             <span class="close">&times;</span>
             <h2>Ansicht eines Events</h2>
-            <img @*style="margin-left:20px;margin-top:20px;"*@ src="/img/orte/{{eventDetails.image}}" alt="Kein Bild vorhanden!" />
+            <img ng-src="/img/orte/{{eventDetails.image}}" alt="Kein Bild vorhanden!" />
+            <div style="display:inline;border:1px solid red;" >{{eventDetails.customError}}</div>
         </div>
         <div class="modal-body">
             <form>
@@ -52,7 +53,7 @@
                         <tr ng-repeat="item in eventDetails.character track by $index">
                             
                             <td>
-                                <img src='/img/klassen/{{item.image}}' />
+                                <img ng-src='/img/klassen/{{item.image}}' />
                                 {{item.name}} : <span title='Maximal'>{{item.maxTeilnehmer}}</span>
                             </td>
                             <td>
@@ -72,12 +73,11 @@
             </div>
         </div>
         <div class="modal-footer">
-            {{isReadOnly}},{{isRegistered}}
-            <button title="Anmelden" class="btn btn-primary pull-right" ng-click="anmelden(eventDetails.id,radio.class.klasse2Event_Id)" ng-disabled="isReadOnly || isRegistered">Anmelden</button>
+           <button title="Anmelden" class="btn btn-primary pull-right" ng-click="anmelden(eventDetails.id,radio.class.klasse2Event_Id)" ng-disabled="isReadOnly || isRegistered">Anmelden</button>
+           <button title="Anmelden" class="btn btn-primary pull-right" ng-click="abmelden(eventDetails.id)" ng-disabled="isReadOnly || !isRegistered">Abmelden</button>
            <button title="Löschen" class="btn btn-primary pull-right" ng-click="removeEvent(eventDetails.id)" ng-disabled="isReadOnly">Event Löschen</button>
         </div>
     </div>
-
 </div>
 <script>
     

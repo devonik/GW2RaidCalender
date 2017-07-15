@@ -200,6 +200,7 @@
     <Compile Include="Controllers\Gw2RaidCalenderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RaidLogsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -227,6 +228,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\favicon\TEM_Member_16x16Neu.png" />
     <Content Include="img\gw2Pics\gw2_250x52.png" />
     <Content Include="img\gw2Pics\GW2_Logo.png" />
     <Content Include="img\gw2Pics\GW2_Logo_1024x555.png" />
@@ -254,6 +256,8 @@
     <Content Include="img\rassen\norn.jpg" />
     <Content Include="img\rassen\sylvari.jpg" />
     <Content Include="img\svg\loader.svg" />
+    <Content Include="img\touchIcon\TEMFavicon120x119.PNG" />
+    <Content Include="img\touchIcon\TEMFavicon152x151.PNG" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\AngularUICalender.js" />
     <Content Include="Scripts\bootstrap-3.3.7\bootstrap-theme.min.css" />
@@ -477,6 +481,7 @@
     <Content Include="Views\Gw2RaidCalender\Index.cshtml" />
     <Content Include="Views\Gw2RaidCalender\_createEvent.cshtml" />
     <Content Include="Views\Gw2RaidCalender\_detailEvent.cshtml" />
+    <Content Include="Views\RaidLogs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
