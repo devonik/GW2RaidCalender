@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "_detailEvent";
+}
+<link href="~/Scripts/custom/detailWindow.css" rel="stylesheet" />
+<div id="detailEvent" class="modal" ng-controller="DetailEventController as detail">
+    <!-- Modal content -->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Ansicht eines Events</h2>
+            <img ng-src="/img/orte/{{eventDetails.image}}" alt="Kein Bild vorhanden!" />
+            <div style="display:inline;border:1px solid red;" >{{eventDetails.customError}}</div>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div>
+                    <label class="col-md-3 control-label">Typ:</label>
+                    <div class="col-md-6 form-control">
+                        {{eventDetails.eventart}}
+                    </div>
+                </div>
+                <div>
+                    <label class="col-md-3 control-label">Bezeichnung:</label>
+                    <div class="col-md-6 form-control">{{eventDetails.title}}</div>
+                </div>
+
+                <div>
+                    <label class="col-md-3 control-label">Von:</label>
+                    <div class="col-md-6 form-control">{{eventDetails.von}}</div>
+                </div>
+                <div>
+                    <label class="col-md-3 control-label">Bis:</label>
+                    <div class="col-md-6 form-control">{{eventDetails.bis}}</div>
+                </div>
+            </form>
+            
+        </div>
+
+        
+
+        <div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Klasse</th>
+                            <th>(Teilnehmer/Maximal), Teilnehmer</th>
+                            <th>Anmelden</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in eventDetails.character track by $index">
+                            
+                            <td>
+                                <img ng-src='/img/klassen/{{item.image}}' />
+                                {{item.name}} : <span title='Maximal'>{{item.maxTeilnehmer}}</span>
+                            </td>
+                            <td>
+                                <span title='[n] von maximal [n] plätzen belegt'>({{item.teilnehmerAnz}}/{{item.maxTeilnehmer}})</span>
+                                <div class='teilnehmer-dropdown'>
+                                   <button class='dropbtn'>Teilnehmer</button>
+                                   <div class='teilnehmer-dropdown-content'>
+                                       <p ng-repeat="user in item.teilnehmer track by $index">{{user}}</p>
+                                   </div>
+                                </div>
+                            <td>
+                                <input type='radio' name="anmelden" title='Anmelden' ng-model="radio.class" ng-value="item" value="{{item.name}}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+           <button title="Anmelden" class="btn btn-primary pull-right" ng-click="anmelden(eventDetails.id,radio.class.klasse2Event_Id)" ng-disabled="isReadOnly || isRegistered">Anmelden</button>
+           <button title="Anmelden" class="btn btn-primary pull-right" ng-click="abmelden(eventDetails.id)" ng-disabled="isReadOnly || !isRegistered">Abmelden</button>
+           <button title="Löschen" class="btn btn-primary pull-right" ng-click="removeEvent(eventDetails.id)" ng-disabled="isReadOnly">Event Löschen</button>
+        </div>
+    </div>
+</div>
+<script>
+    
+</script>

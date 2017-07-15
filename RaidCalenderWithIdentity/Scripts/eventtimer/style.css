@@ -1,0 +1,113 @@
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:400, 700);
+
+h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 100%;
+    margin: 0.25em 0;
+    color: #AAA;  /* #DEC59A */
+}
+.event-wrapper {
+    /* margin-bottom: 20px; */
+    position: relative;
+  	padding-top: 1em;
+    width: 100%;
+}
+.event-pointer {
+    position: absolute;
+    height: 105%;
+    border-left: 2px solid red;
+    margin-left: -1px;
+    top: 0;
+    transition: left 1s ease-in-out;
+	  box-shadow: -3px 0px 7px 1px rgba(0, 0, 0, 0.2);
+}
+.event-pointer-time {
+    position: absolute;
+    font-size: 0.9em;    
+  	background: red;  /* black */
+    color: white;
+    font-weight: bold;
+    padding: 2px 6px;
+    margin-left: -2px;
+    white-space: nowrap;
+    box-shadow: -3px 2px 7px 1px rgba(0, 0, 0, 0.1),
+                0px 2px 7px rgba(0, 0, 0, 0.2); 
+}
+.event-limit {
+    position: absolute;
+    height: 105%;
+    border-left: 2px solid #DEC59A;  /* #AAA */	
+    margin-left: -1px;
+    top: 0;
+    left: 88.88%;
+    transition: left 1s ease-in-out;
+  	box-shadow: -3px 0px 7px 1px rgba(222, 197, 154, 0.5);
+}
+.event-limit-text {
+    position: absolute;
+    background: #DEC59A;
+    color: rgba(255,255,255,0.8);
+    font-weight: bold;
+    padding: 2px 6px;
+    margin-left: -2px;
+    white-space: nowrap;
+}
+.event-bar {
+    display: flex;
+    flex-wrap: nowrap;
+  	box-shadow: -1px 2px 5px 1px rgba(222, 197, 154, 0.7);
+}
+.event-bar-segment {
+    box-sizing: border-box;
+    padding: 0.5em;
+    border-left: 1px solid #DEC59A;  /* #E1D4A7 */
+}
+.event-bar-segment.future {
+  	color: #AAA;
+}
+.event-time {
+    display: inline-block;
+  	font-size: 11px;
+    /* font-weight: bold; */
+}
+.event-name {
+    display: block;	
+  	font-size: 12px;
+    font-weight: bold;
+  	width: 100%;
+    margin: 0.25em 0;
+    /* color: #000; */
+}
+.event-chatlink {	
+    font-size: 10px;
+  	margin-top: 5px;
+  	cursor:pointer;
+    /* color: white; #FF8000 */
+}
+.event-wrapper span.event-name a {
+    color: #043277;
+}
+.event-bar-segment.future .event-name a {
+    color: #AAA;
+}
+input.chatlink {
+    position: absolute;
+  	font-size: 10px;
+    margin-top: -2px;
+    margin-left: -2px;
+    display: none;
+    width: 6.6em;
+}
+#littleMsgBox {
+    font-size: 0.9em;
+  	font-weight: bold;
+    color: white;	
+    background: rgba(0,0,0,0.6);;
+  	padding: 4px 6px;
+  	margin-top: 15px;
+    margin-left: 10px;
+	  box-shadow: -3px 2px 7px 1px rgba(0, 0, 0, 0.3);	
+	/* white-space: nowrap; */
+}

@@ -1,0 +1,382 @@
+﻿@using Microsoft.AspNet.Identity
+@model RaidCalenderWithIdentity.Models.IndexViewModel
+@{
+    ViewBag.Title = "Ändere dein Profil";
+}
+<style>
+    a:hover{
+        color:#fff;
+background-color:#00bbbb;
+text-shadow: 0px 0px 0px; 
+cursor:pointer;
+    }
+    .link{
+        display:table;
+        width:140px;
+    }
+    .link-text{
+        display:table-cell;
+        vertical-align:middle;
+    }
+</style>
+<style>
+    #user_profil {
+        display: flex;
+        flex-direction: column;
+    }
+
+        #user_profil div {
+            display: flex;
+            margin-bottom:15px;
+        }
+        .raidIcon{
+            height:50px;
+            width:50px;
+            opacity:.2;
+        }
+        .raidLabel{
+            width:50px;
+        }
+        #raidBosse li{
+            margin-bottom:10px;
+        }
+</style>
+<h2>@ViewBag.Title.</h2>
+<div ng-app="user" ng-controller="UserCharController as CharCtrl">
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div id="user_profil">
+        <header>
+            <h2>Profil:</h2>
+        </header>
+        <main class="main">
+            <div>
+                <label class="col-md-3 control-label">Username:</label>
+                <div class="col-md-6">
+                    @User.Identity.GetUserName()
+                </div>
+            </div>
+            <div>
+                <label class="col-md-3 control-label">Passwort:</label>
+                <div class="col-md-6">
+                    <a class="link" style="display:table;" href="@Url.Action("ChangePassword","Manage")" target="_blank">
+                        <i class="fa fa-pencil-square-o fa-lg"></i>
+                        <span class="link-text">Ändern</span>
+                        @*@if (Model.HasPassword)
+                            {
+                                @Html.ActionLink("Ändere dein Passwort", "ChangePassword")
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Erstellen", "SetPassword")
+                            }*@
+                    </a>
+                </div>
+            </div>
+            <div>
+                <label class="col-md-3 control-label">External Logins: @Model.Logins.Count</label>
+                <div class="col-md-6">
+                    <a href="@Url.Action("ManageLogins","Manage")" class="link" target="_blank">
+                        <i class="fa fa-pencil-square-o fa-lg"></i>
+                        <span class="link-text" >Ändern</span> 
+                    </a>
+                </div>
+            </div>
+            <div>
+                <label class="col-md-3 control-label">API Schlüssel</label>
+                <div class="col-md-6">
+                    <input type="text" ng-model="user.apiKey" ng-disabled="!isSettingApiKey"/>
+                    <a class="link" ng-click="isSettingApiKey = true" ng-hide="isSettingApiKey">
+                        <i class="fa fa-pencil-square-o fa-lg"></i>
+                        <span class="link-text">Ändern</span>
+                    </a>
+                    <a class="link" ng-click="setApiKey(user.apiKey)" ng-hide="!isSettingApiKey">
+                        <i class="fa fa-pencil-square-o fa-lg"></i>
+                        <span class="link-text">Speichern</span>
+                    </a>
+                </div>
+            </div>
+            @*
+                Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                 See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                 Uncomment the following block after you have set up two-factor authentication
+            *@
+            @*
+                <dt>Phone Number:</dt>
+                <dd>
+                    @(Model.PhoneNumber ?? "None")
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <br />
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                        }
+                    }
+                    else
+                    {
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                    }
+                </dd>
+            *@
+
+            <div>
+                <label class="col-md-3 control-label">Two-Factor Authentication:</label>
+                <div class="col-md-6">
+                    There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication.
+                </div>
+                @*@if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }*@
+            </div>
+            <div>
+                <label class="col-md-3 control-label">Charaktere</label>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rasse</th>
+                                <th>Klasse</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addChar_table_body">
+                            <tr ng-repeat="char in charlist">
+                                <td>
+                                    <img title='{{char.rasse_name}}' ng-src="~/img/rassen/{{char.rasse_img}}" alt='{{char.rasse_name}}' />
+                                </td>
+                                <td>
+                                    <img title='{{char.klasse_name}}' ng-src="~/img/klassen/{{char.klasse_img}}" alt='{{char.klasse_name}}' />
+                                <td>
+                                    <label title='Klasse'>{{char.char_name}}</label>
+                                </td>
+                                <td> 
+                                    <a class="link" ng-click='deleteChar(char.Klasse2User_Id, $index)'>
+                                        <i class="fa fa-trash fa-lg"></i>
+                                        <span class="link-text">Löschen</span> 
+                                    </a>
+                                </td>
+                            </tr>
+                            <newChars></newChars>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <a id="addChar" class="link">
+                        <i class="fa fa-plus-square fa-lg"></i>
+                        <span class="link-text">Hinzufügen</span> 
+                    </a>
+                </div>
+            </div>
+            <div>
+                <label class="col-md-3 control-label">Bereits besiegte Raidbosse der aktuellen Woche</label>
+                <ul id="raidBosse">
+                    <li>
+                        <label class="raidLabel">Wing 1</label>
+                        <img class="raidIcon" id="vale_guardian" src="https://render.guildwars2.com/file/1CCB9B3880B062465F9F5834F04739289AF27BBA/1301792.png" title="Tal-Wächter">
+                        <img class="raidIcon" id="gorseval" src="https://render.guildwars2.com/file/E5074A6E5CE552A9231195202B45D5DA2C1A585E/1301787.png" title="Goseval" />
+                        <img class="raidIcon" id="sabetha" src="https://render.guildwars2.com/file/1C96C03C385529A818E9E14ED7BB7E47F10154F5/1301795.png" title="Sabetha" />
+                    </li>
+                    <li>
+                        <label class="raidLabel">Wing 2</label>
+                        <img class="raidIcon" id="slothasor" src="https://render.guildwars2.com/file/2370FE955AC49D38B99F2592F629D2B544BABBD2/1377392.png" title="Faultier">
+                        <img class="raidIcon" id="bandit_trio" src="https://render.guildwars2.com/file/A95E0E20EB6FDE9CBCEE667FF13BEAC2E80D594D/1377389.png" title="Trio" />
+                        <img class="raidIcon" id="matthias" src="https://render.guildwars2.com/file/EBAFC4EA9C80F6D66AD9A427E15918E0172A476F/1377391.png" title="Matthias" />
+                    </li>
+                    <li>
+                        <label class="raidLabel">Wing 3</label>
+                        <img class="raidIcon" id="escort" src="https://render.guildwars2.com/file/433A4E66794240AD463941F868754BB46D245020/1451172.png" title="Escort">
+                        <img class="raidIcon" id="keep_construct" src="https://render.guildwars2.com/file/E87C6B0BB4C1D93231A4DB7CBE91157516580A3E/1451173.png" title="KC" />
+                        <img class="raidIcon" id="xera" src="https://render.guildwars2.com/file/551509B3B91270BFF016C020D2F9D99B550F93AA/1451174.png" title="Xera" />
+                    </li>
+                    <li>
+                        <label class="raidLabel">Wing 4</label>
+                        <img class="raidIcon" id="cairn" src="https://render.guildwars2.com/file/0863ADC609086A5E5F6C031DDC1766033432250C/1633961.png" title="Cairn">
+                        <img class="raidIcon" id="mursaat_overseer" src="https://render.guildwars2.com/file/05FCD9D1B4959A051EEC3B160F0802FAB40C2619/1633963.png" title="Mursaat" />
+                        <img class="raidIcon" id="samarog" src="https://render.guildwars2.com/file/9645BE1925D1AC3E7177C99B740078F09EA5A739/1633967.png" title="Samarog" />
+                        <img class="raidIcon" id="deimos" src="https://render.guildwars2.com/file/03E57D1019181CE015C09BDA0601B7D34ECD3841/1633966.png" title="Deimos" />
+                    </li>
+                </ul>
+                {{apiError}}
+            </div>
+        </main>
+    </div>
+    <div id="addCharWindow" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Füge einen Charakter hinzu</h2>
+            </div>
+            <form name="addCharForm" class="modal-body" novalidate>
+                <div class="row">
+                    <div>
+                        <label class="col-md-3 control-label">Rasse:</label>
+                        <select ng-model="user.char.selectedRasse" ng-options="item.Bezeichnung for item in rassen track by item.Rasse_Id" class='form-control' required>
+                            @*<option value="">Wählen eine Rasse...</option>*@
+                        </select>
+                    </div>
+                    <div>
+                        <label class="col-md-3 control-label">Klasse:</label>
+                        <select ng-model="user.char.selectedKlasse" ng-options="item.Bezeichnung for item in klassen track by item.Klasse_Id" class='form-control' required></select>
+                    </div>
+                    <div>
+                        <label class="col-md-3 control-label">Name:</label>
+
+                        <input ng-model="user.char.name" class="form-control" placeholder="Hier den Namen eingeben..." required>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
+                <input ng-click="update(user)" class="btn btn-primary pull-right" ng-disabled="addCharForm.$invalid" value="Speichern" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $("#addChar").click(function () {
+        $("#addCharWindow.modal").css("display", "block");
+    });
+    var eventApp = angular.module('user', []);
+    eventApp.controller('UserCharController', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+        $scope.isSettingApiKey = false;
+        $scope.user = [];
+        $scope.user.apiKey = '@Model.ApiKey';
+        $scope.apiError = "";
+        if (typeof $scope.user.apiKey !== 'undefined' && $scope.user.apiKey !== "") {
+            $http({
+                methode: 'GET',
+                url: 'https://api.guildwars2.com/v2/account/raids?access_token=' + $scope.user.apiKey,
+            }).then(function successCallback(result) {
+                $scope.apiError = "";
+                $.each(result.data, function (key, value) {
+                    $("#" + value).css("opacity", "1");
+                });
+            }, function errorCallback(result) {
+                $scope.apiError = "Kein Gültiger API Schlüssel";
+            });
+        }
+        else {
+            $scope.apiError = "Es wurde kein API Schlüssel gespeichert";
+        }
+        $http.get('@Url.Content("~/Gw2RaidCalender/GetUserCharsByCurrentUser")').then(function (result) {
+            $scope.charlist = result.data;
+        });
+        $http({
+            method: 'GET',
+            url: '@Url.Content("~/Gw2RaidCalender/GetAllRace")'
+        }).then(function successCallback(result) {
+            $scope.rassen = result.data;
+        }, function errorCallback(result) {
+        });
+        $http({
+            methode: 'GET',
+            url: '@Url.Content("~/Gw2RaidCalender/GetAllClasses")',
+        }).then(function successCallback(result) {
+            $scope.klassen = result.data;
+        });
+        $scope.setApiKey = function (apiKey) {
+            console.log(apiKey);
+            $scope.isSettingApiKey = false;
+            $scope.raidlist = [];
+            //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
+            $http.post('@Url.Content("~/Gw2RaidCalender/SetApiKey")', {
+                apiKey: apiKey,
+                userId: '@User.Identity.GetUserId()'
+            }).then(function successCallback(result) {
+                console.log(result.data);
+            }),
+                function errorCallback(result) {
+                };
+            console.log($scope.user.apiKey);
+            if (typeof $scope.user.apiKey !== 'undefined' && $scope.user.apiKey !== "") {
+                $http({
+                    methode: 'GET',
+                    url: 'https://api.guildwars2.com/v2/account/raids?access_token=' + $scope.user.apiKey,
+                }).then(function successCallback(result) {
+                    $scope.apiError = "";
+                    $.each(result.data, function (key, value) {
+                        $("#" + value).css("opacity", "1");
+                    });
+                }, function errorCallback(result) {
+                    $scope.apiError = "Kein Gültiger API Schlüssel";
+                });
+            }
+            
+            else {
+                $scope.apiError = "Es wurde kein API Schlüssel gespeichert";
+            }
+        };
+        $scope.update = function (user) {
+            if ($scope.addCharForm.$valid) {
+
+                //Generiere neue Klasse2UserId, damit die Neuerstellte Zeile auch gelöscht werden kann
+                $http.post('@Url.Content("~/Gw2RaidCalender/AddNewCharToUser")', {
+                    klasse_id: user.char.selectedKlasse.Klasse_Id,
+                    rasse_id : user.char.selectedRasse.Rasse_Id,
+                    bezeichnung : user.char.name
+                }).then(function successCallback(result) {
+                        console.log(result.data);
+                        //Konvertierung des Json Objekts, damit es auf der Oberfläche direkt angezeigt werden kann. Das die Namen anders sind durch die Drop downs
+                        var char = { Klasse2User_Id: parseInt(result.data), klasse_name: user.char.selectedKlasse.Bezeichnung, klasse_img: user.char.selectedKlasse.Avatarlink, rasse_name: user.char.selectedRasse.Bezeichnung, rasse_img: user.char.selectedRasse.Avatarlink, char_name: user.char.name }
+                    $scope.charlist.push(char);
+                }),
+                    function errorCallback(result) {
+                    };
+
+                $scope.user = {};
+                ////Close the Window and reset the create form
+                $("#addCharWindow.modal").css("display", "none");
+            }
+        };
+        //ERROR: Man kann den neuesten Eintrag nicht löschen, da noch keine
+        $scope.deleteChar = function (char_id, index) {
+            var jsonOfCharlist = $scope.charlist;
+            if (confirm('Are you sure you want to delete this?')) {
+                    var charlist = $scope.charlist;
+                $http.post('@Url.Content("~/Gw2RaidCalender/DeleteChar")', { id: char_id })
+                    .then(function (data, status, headers) {
+                        //Löscht die Zeile an der Oberfläche
+                        charlist.splice(index, 1)
+                        $scope.charlist = charlist;
+                    });
+            }
+            else {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                return false;
+            }
+        }
+        $scope.reset = function () {
+            //reset all inputs
+            $scope.user = {};
+        };
+
+        //$scope.reset();
+    }]);
+</script>

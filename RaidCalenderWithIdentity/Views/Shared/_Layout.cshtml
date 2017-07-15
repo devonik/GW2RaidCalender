@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @* FAVICON *@
+    <link rel="icon" href="~/img/favicon/TEM_Member_16x16Neu.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/img/favicon/TEM_Member_16x16Neu.png" type="image/x-icon" />
+    @* TOUCH ICON für mobile *@
+    <link rel="apple-touch-icon" sizes="120x120" href="~/img/touchIcon/TEMFavicon120x119.PNG" />
+    <link rel="apple-touch-icon" sizes="152x152" href="~/img/touchIcon/TEMFavicon152x151.PNG" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GW2 Webapps</title>
+    <!-- Latest compiled and minified CSS -->
+
+    <link href="~/Scripts/bootstrap-3.3.7/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Optional theme -->
+
+    <link href="~/Scripts/bootstrap-3.3.7/bootstrap-theme.min.css" rel="stylesheet" />
+    @* jquery *@
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+
+    <script src="~/Scripts/bootstrap-3.3.7/bootstrap.min.js"></script>
+
+    @* Font Awesome *@
+    <link href="~/Scripts/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    @* angular *@
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/bootstrapUI-0-13-0.js"></script>
+    @* Calender *@
+    <link href='~/Scripts/fullcalender-3.3.1/fullcalendar.min.css' rel='stylesheet' />
+    <link href='~/Scripts/fullcalender-3.3.1/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <script src='~/Scripts/fullcalender-3.3.1/lib/moment.min.js'></script>
+    @*<script src='~/Scripts/fullcalender-3.3.1/lib/jquery.min.js'></script>*@
+    <script src='~/Scripts/fullcalender-3.3.1/fullcalendar.min.js'></script>
+    <script src='~/Scripts/fullcalender-3.3.1/locale-all.js'></script>
+    @* Calender *@
+    
+    @* custom *@
+    <script src="~/Scripts/AngularUICalender.js"></script>
+    <link href="~/Scripts/custom/window.css" rel="stylesheet" />
+    <script src="~/Scripts/custom/main.js"></script>
+    @* custom *@
+    @* Wichtig, da sonst das got net mvc framework nicht richtig angezeigt wird *@
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @* Timepicker *@
+    <script src="~/Scripts/timepickerByjonthornton/jquery.timepicker.min.js"></script>
+    <link href="~/Scripts/timepickerByjonthornton/jquery.timepicker.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia.css" />
+    <link rel="stylesheet" href="https://d1h9a8s8eodvjz.cloudfront.net/fonts/menomonia/08-02-12/menomonia-italic.css" />
+    <link href="~/Scripts/custom/menu.css" rel="stylesheet" />
+    <style>
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+    #loadingIcon{
+        margin-top:10em;
+        height:50%;
+    }
+    #overlayIcon{
+        visibility: hidden;
+        opacity:0;
+        background:rgba(255,255,255,.8) 50% 50% no-repeat;
+        position:fixed;
+        width:100%;
+        height:100%;
+        left:0;
+        top:0px;
+        z-index:9999;
+        text-align:center;
+        transition: visibility 1s, opacity 1s;
+    }
+    .loaded{
+        visibility:visible !important;
+        opacity:1 !important;
+    }
+    svg{
+  width: 100px;
+  height: 100px;  
+  }
+    /*GW2 Schrift*/
+    body,html{
+        font-family:Menomonia !important;
+        width:100%;
+        /*min-height wichtig damit sich die höhe beim scrollen mit erhöht*/
+        min-height:100%;
+    }
+    </style>
+    
+</head>
+<body class="bg-img">
+        <nav class="main-menu">
+
+            <div class="settings"></div>
+            <div class="scrollbar" id="style-1">
+
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Gw2RaidCalender")">
+                            <i class="fa fa-calendar fa-lg"></i>
+                            <span class="nav-text">Raid Calender</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Index", "EventTimer")">
+                            <i class="fa fa-clock-o fa-lg"></i>
+                            <span class="nav-text">HoT - Event Timer</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "RaidLogs")">
+                            <i class="fa fa-clock-o fa-lg"></i>
+                            <span class="nav-text">Raid Logs</span>
+                        </a>
+                    </li>
+                        @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </nav>
+        <div class="container body-content">
+            <div id="overlayIcon">
+                <img src="~/img/svg/loader.svg" id="loadingIcon" />
+            </div>
+            <script>
+                var pageState = document.readyState;
+                console.log(pageState);
+                if (pageState === "loading") {
+                    console.log("Page is loading")
+                    $("#overlayIcon").addClass("loaded");
+                }
+            </script>
+            <main style="background:rgba(255,255,255,.8) 50% 50% no-repeat;padding:20px;margin-left:50px;">
+                @RenderBody()
+            </main>
+            
+            <footer style="margin-bottom:0;text-align:center;">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Guild Wars 2 Web Apps</p>
+            </footer>
+        </div>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

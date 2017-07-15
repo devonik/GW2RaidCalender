@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "_createEvent";
+}
+<link href="~/Scripts/custom/createWindow.css" rel="stylesheet" />
+@*<span class="fielderror"><i class="fa_icon icon-minus-sign"></i>numeric input required</span><span class="datatype"><i class="fa_icon icon-info-sign"></i>numeric (number of seconds)</span> <span class="charcount"><i class="fa_icon icon-info-sign"></i>min. 0 - max. 180</span>*@
+<div id="createEvent" class="modal" ng-controller="AddEventController as eventCtrl">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Event hinzufügen</h2>
+        </div>
+        <div class="modal-body">
+            <form name="eventForm" style="width:100%;" novalidate>
+                <fieldset class="form-group">
+                    <div class="col-md-3">
+                        <label>Wähle einen Typ</label>
+                        <select class="form-control" ng-model="event.typ" ng-options="item.Bezeichnung for item in eventart track by item.Eventart_Id" required>
+                        </select>
+                    </div>
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Raid'">
+                        <label>Bezeichnung:</label>
+                        <select ng-model="event.title" ng-options="item as item.Bezeichnung for item in raids track by item.Bezeichnung" class='form-control'>
+                        </select>
+                    </div>
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Fraktale'">
+                        <label>Bezeichnung:</label>
+                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
+                        @*<p ng-show="event.title.$invalid" class="help-block">Bezeichung ist ein Pflichfeld</p>*@
+                    </div>
+                    <div class="col-md-2" ng-show="event.typ.Bezeichnung=='Sonstiges'">
+                        <label>Bezeichnung:</label>
+                        <input type='text' ng-model='event.title' class='form-control' placeholder='Hier Titel eingeben...' title='Titel' required />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Von:</label>
+                        <input type="text" ng-model="event.von" id="cvon" class="timepicker form-control" style="width:6.5em" required />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Bis:</label>
+                        <input type="text" ng-model="event.bis" id="cbis" class="timepicker form-control" style="width:6.5em" required />
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr ng-repeat="item in classes track by $index">
+                                        <td>
+                                            <label>{{item.Bezeichnung}}</label>
+                                            <input ng-model="event.class[item.Klasse_Id].maxTeilnehmer" 
+                                                   @*ng-change="event.class[item.Klasse_Id].image=item.Image"*@ 
+                                                   type="number" class="form-control bfh-number" min="0" max="10" value="0" />
+                                        </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <input type="button" ng-click="reset()" class="btn btn-primary pull-right" value="Zurücksetzen" id="reset" />
+                    <input ng-click="update(event)" class="btn btn-primary pull-right" ng-disabled="eventForm.$invalid" value="Speichern" />
+                </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div style="display:inline;border:1px solid red;">{{createEvent.customError}}</div>
+        </div>
+    </div>
+
+</div>
